@@ -1,14 +1,18 @@
 # Changelog
 
+## 0.1.0 Preview 3
+
+- Simplified the keyboard layout correction description in About fnota and the public documentation. Third-party attribution remains in the bundled license notices.
+
 ## 0.1.0 Preview 2
 
-- Added a RuSwitcher-based keyboard layout correction section to **About fnota**. It covers setup, correction after Space, and undo with Esc.
+- Added a keyboard layout correction section to **About fnota**. It covers setup, correction after Space, and undo with Esc.
 - Published the README, build guide, release notes, and installation instructions in English.
 
 ## 0.1.0 Preview
 
-- Added optional keyboard layout correction using an engine adapted from RuSwitcher. fnota uses the two languages enabled in macOS and shows the active pair in settings.
-- Added undo with Esc, secure-input and app exclusions, and a pause while RuSwitcher is running.
+- Added optional keyboard layout correction. fnota uses the two languages enabled in macOS and shows the active pair in settings.
+- Added undo with Esc, secure-input and app exclusions, and a pause when a conflicting switcher is detected.
 - Added a pink Keep Awake indicator beside the menu bar icon.
 
 ## Earlier development

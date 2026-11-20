@@ -6,15 +6,15 @@ fnota is a free, open-source macOS menu bar app for **automatic keyboard layout 
 
 ## Automatic keyboard layout correction
 
-fnota uses a local engine adapted from [RuSwitcher](https://github.com/rashn/RuSwitcher) to correct words typed in the wrong keyboard layout, in the style of Punto Switcher. The adapted Swift code is built into fnota. No separate RuSwitcher installation is required.
+fnota can correct words typed in the wrong keyboard layout and switch to the intended layout. Correction runs locally on your Mac.
 
 1. In macOS Keyboard settings, enable input sources for exactly two languages.
 2. In fnota, go to **Settings → Keyboard layout** and turn on **Automatically switch keyboard layouts**. The panel shows the active pair. The feature is off by default.
 3. Type normally. After **Space**, fnota can correct a recognized word and switch to the intended layout. Press **Esc** immediately to undo.
 
-Grant Accessibility access. If keyboard monitoring is unavailable, check Input Monitoring and reopen fnota. The switcher skips secure input and certain apps, and pauses if it detects RuSwitcher running, so the two apps do not both try to correct the same input. Names, short words, custom layouts, and unusual text fields may behave differently. Coverage across all apps and language pairs remains unverified.
+Grant Accessibility access. If keyboard monitoring is unavailable, check Input Monitoring and reopen fnota. The switcher skips secure input and certain apps. Names, short words, custom layouts, and unusual text fields may behave differently. Coverage across all apps and language pairs remains unverified.
 
-You can also find these instructions in **Settings → About fnota** in Preview 2.
+You can also find these instructions in **Settings → About fnota** in the current preview.
 
 ## Other features
 
@@ -39,6 +39,6 @@ Download the ZIP from [Releases](https://github.com/zaza41rus/fnota/releases), u
 
 To get the source, choose **Code → Download ZIP** or run `git clone https://github.com/zaza41rus/fnota.git`. Use **Fork** to start your own version. For bug reports, include your macOS version, the affected app, and steps to reproduce. Use sample text and remove personal data from logs.
 
-fnota's original code is available under the [MIT License](LICENSE). You can use, modify, and redistribute it while preserving the copyright and license notices. RuSwitcher, the Hebrew word list, native libraries, and downloadable models retain their own terms. [Third-party notices](UniversalMac/Resources/THIRD_PARTY.md)
+fnota's original code is available under the [MIT License](LICENSE). You can use, modify, and redistribute it while preserving the copyright and license notices. Third-party code, word lists, native libraries, and downloadable models retain their own terms. [Third-party notices](UniversalMac/Resources/THIRD_PARTY.md)
 
 The software is provided as is, without warranty. The MIT License limits liability to the extent permitted by applicable law.
