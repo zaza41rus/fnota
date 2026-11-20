@@ -1,0 +1,42 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "solid": "srgb:0.82000,0.82000,0.82000,1.00000"
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "solid": "srgb:0.20000,0.20000,0.20000,1.00000"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "fn.svg",
+          "name": "fn",
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.34000,0.34000,0.34000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.88000,0.88000,0.88000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "specular": false
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

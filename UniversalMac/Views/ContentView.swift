@@ -2,6 +2,7 @@ import SwiftUI
 import AppKit
 struct ContentView:View {
  @Bindable var state:AppState
+ @Environment(\.colorScheme) private var colorScheme
  @State private var back:[String]=[]
  @State private var forward:[String]=[]
  @State private var navigating=false
@@ -10,11 +11,32 @@ struct ContentView:View {
  private var title:LocalizedStringKey {
   switch state.settingsPage { case "translation":"Browser translation";case "keyboard":"Keyboard layout";case "about":"About fnota";case "permissions":"Permissions";default:"Dictation" }
  }
+ private var appIcon: some View {
+  let isDark = colorScheme == .dark
+  let tile = RoundedRectangle(cornerRadius: 7, style: .continuous)
+  return ZStack {
+   tile.fill(LinearGradient(
+    colors: isDark ? [Color(white: 0.28), Color(white: 0.16)] : [Color(white: 0.89), Color(white: 0.74)],
+    startPoint: .top, endPoint: .bottom
+   ))
+   .overlay { tile.strokeBorder(.white.opacity(isDark ? 0.16 : 0.5), lineWidth: 0.75) }
+   .frame(width: 28, height: 28)
+   if let artwork = NSImage(named: "AppIcon-preview") {
+    Image(nsImage: artwork)
+     .renderingMode(.template)
+     .resizable()
+     .foregroundStyle(Color(white: isDark ? 0.88 : 0.34))
+     .frame(width: 28, height: 28)
+   }
+  }
+  .frame(width: 32, height: 32)
+  .accessibilityLabel(Text("application icon"))
+ }
  var body:some View {
   NavigationSplitView(columnVisibility:.constant(.all)) {
    List {
     HStack(spacing:10) {
-     Image(nsImage:NSImage(named:NSImage.applicationIconName)!).resizable().frame(width:32,height:32)
+     appIcon
      VStack(alignment:.leading,spacing:2) {
       Text("fnota").font(.headline).foregroundStyle(.primary)
       (Text("Version") + Text(" " + (Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "0.1.0"))).foregroundStyle(.secondary)

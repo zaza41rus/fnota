@@ -19,6 +19,13 @@ if [[ "$CTRANSLATE_ID" != @rpath/libctranslate2.4.8.3.dylib ]]; then
   install_name_tool -change "$CTRANSLATE_ID" @rpath/libctranslate2.4.8.3.dylib "$APP/Contents/MacOS/UniversalMac"
 fi
 cp -R "$ROOT_DIR/Resources/." "$APP/Contents/Resources/"
+ICON_OUTPUT="$(mktemp -d /tmp/fnota-app-icon.XXXXXX)"
+xcrun actool --compile "$ICON_OUTPUT" --app-icon AppIcon --platform macosx \
+  --minimum-deployment-target 27.0 --target-device mac \
+  --output-partial-info-plist "$ICON_OUTPUT/Info.plist" "$ROOT_DIR/AppIcon.icon"
+cp "$ICON_OUTPUT/Assets.car" "$ICON_OUTPUT/AppIcon.icns" "$APP/Contents/Resources/"
+/usr/libexec/PlistBuddy -c "Add :CFBundleIconName string AppIcon" "$APP/Contents/Info.plist"
+rm -r "$ICON_OUTPUT"
 swiftc -O "$ROOT_DIR/Helper/LeasePolicy.swift" "$ROOT_DIR/Helper/main.swift" -o "$APP/Contents/Resources/fnota-lid-helper"
 codesign --force --sign - --identifier local.fnota.lid "$APP/Contents/Resources/fnota-lid-helper"
 # Models are managed in Application Support and downloaded through Settings.

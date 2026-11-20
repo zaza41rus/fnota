@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 Preview 6
+
+- Added light and dark app icons. Settings follows the window appearance, and the bundled layered icon supports macOS icon appearance controls.
+
+
 ## 0.1.0 Preview 5
 
 - Removed the background from the icon artwork so macOS draws a single icon tile.
