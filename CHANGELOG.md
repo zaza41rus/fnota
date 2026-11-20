@@ -1,17 +1,21 @@
-# История изменений
+# Changelog
 
-Это обзор сохранившихся этапов разработки. Первый публичный коммит фиксирует текущее состояние исходников. Исходной цепочки Git-коммитов в рабочей копии не сохранилось.
+## 0.1.0 Preview 2
 
-## 2026-11-18 — переключатель раскладки
+- Added a RuSwitcher-based keyboard layout correction section to **About fnota**. It covers setup, correction after Space, and undo with Esc.
+- Published the README, build guide, release notes, and installation instructions in English.
 
-- Добавлено опциональное автоисправление слова после пробела и отмена по Esc.
-- Движок RuSwitcher адаптирован для пары из двух языков, включённых в macOS. Пара отображается в настройках fnota.
-- Добавлены проверка защищённого ввода, исключения приложений и пауза при активном RuSwitcher.
-- В строке меню появился розовый индикатор Keep Awake.
+## 0.1.0 Preview
 
-## Октябрь 2026 — нативное приложение fnota
+- Added optional keyboard layout correction using an engine adapted from RuSwitcher. fnota uses the two languages enabled in macOS and shows the active pair in settings.
+- Added undo with Esc, secure-input and app exclusions, and a pause while RuSwitcher is running.
+- Added a pink Keep Awake indicator beside the menu bar icon.
 
-- Браузерный прототип локального перевода вырос в приложение для строки меню macOS. Перевод получил нативный движок и управление через fn ×2.
-- Добавлены локальная диктовка по удержанию fn, вставка результата и управление моделями.
-- Добавлены настройка разрешений и режим удержания Mac в рабочем состоянии, включая помощник для закрытой крышки.
-- Настройки получили боковую панель и страницу About fnota.
+## Earlier development
+
+- The local browser translation prototype became a native macOS menu bar app with double-press fn to translate.
+- Added on-device dictation, text insertion, downloadable models, and permission settings.
+- Added Keep Awake and its optional closed-lid helper.
+- Added the settings sidebar and About fnota page.
+
+The first public commit records the source as it existed at publication. Earlier Git commits were unavailable in the working copy.

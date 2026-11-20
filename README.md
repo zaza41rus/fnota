@@ -1,42 +1,44 @@
 # fnota
 
-Бесплатное приложение с открытым исходным кодом для строки меню macOS. Диктуйте текст, переводите страницы в Safari и Chrome и исправляйте слова, набранные в другой раскладке. fnota также может временно удерживать Mac в рабочем режиме.
+fnota is a free, open-source macOS menu bar app for **automatic keyboard layout correction**, on-device dictation, and browser translation. It can also temporarily keep your Mac awake.
 
-**Требования текущей сборки:** Apple Silicon (M1 и новее) и macOS 27+. Для сборки нужен Xcode с SDK macOS 27 и нативные библиотеки. [Инструкция по сборке](BUILD.md) · [История изменений](CHANGELOG.md)
+**Requires Apple Silicon (M1 or later) and macOS 27 or later.** [Download the preview](https://github.com/zaza41rus/fnota/releases) · [Build from source](BUILD.md) · [Changelog](CHANGELOG.md)
 
-## Что нового
+## Automatic keyboard layout correction
 
-**Автоисправление раскладки в духе Punto Switcher.** Откройте **Settings → Keyboard layout** и включите **Automatically switch keyboard layouts**. Добавьте раскладки ровно для двух языков в системных настройках клавиатуры. fnota показывает активную пару, проверяет законченное пробелом слово и при уверенном распознавании исправляет его и меняет раскладку. Сразу нажмите **Esc**, чтобы отменить последнее исправление. На чистой установке функция выключена.
+fnota uses a local engine adapted from [RuSwitcher](https://github.com/rashn/RuSwitcher) to correct words typed in the wrong keyboard layout, in the style of Punto Switcher.
 
-Движок адаптирован из RuSwitcher. При запущенном RuSwitcher автоисправление fnota приостанавливается. Защищённый ввод и ряд приложений исключены. Словари и сопоставление клавиш работают локально. Опечатки, имена, короткие слова, пользовательские раскладки и нестандартные поля могут обрабатываться по-разному. Совместимость со всеми приложениями и языковыми парами не проверена.
+1. In macOS Keyboard settings, enable input sources for exactly two languages.
+2. In fnota, go to **Settings → Keyboard layout** and turn on **Automatically switch keyboard layouts**. The panel shows the active pair. The feature is off by default.
+3. Type normally. After **Space**, fnota can correct a recognized word and switch to the intended layout. Press **Esc** immediately to undo.
 
-Розовая точка рядом с **fn** в строке меню показывает, что включён **Keep macOS awake**.
+Grant Accessibility access. If keyboard monitoring is unavailable, check Input Monitoring and reopen fnota. The switcher skips secure input and certain apps, and pauses while RuSwitcher is running. Names, short words, custom layouts, and unusual text fields may behave differently. Coverage across all apps and language pairs remains unverified.
 
-## Как пользоваться
+You can also find these instructions in **Settings → About fnota** in Preview 2.
 
-| Функция | Управление | Разрешения |
+## Other features
+
+| Feature | How to use it | Permissions |
 | --- | --- | --- |
-| Диктовка | Удерживайте **fn** для записи, отпустите для распознавания и вставки. Результат также копируется в буфер обмена. | Микрофон и универсальный доступ |
-| Перевод | Дважды нажмите **fn** в Safari или Chrome. При выделении переводится фрагмент, иначе — текст страницы. Повторное нажатие восстанавливает оригинал. PDF и текст в изображениях не поддерживаются. | Универсальный доступ, автоматизация браузера и Allow JavaScript from Apple Events |
-| Раскладка | Пробел запускает проверку слова, **Esc** отменяет исправление. | Универсальный доступ. Если системный перехват недоступен, проверьте также Input Monitoring и перезапустите fnota. |
-| Keep macOS awake | Включается из меню fnota. Режим может удерживать Mac в работе с закрытой крышкой и временно блокировать обычный сон. | Для системного помощника требуется подтверждение администратора. |
+| Dictation | Hold **fn** to record and release it to transcribe and insert text. The result is also copied to the clipboard. | Microphone and Accessibility |
+| Browser translation | Double-press **fn** in Safari or Chrome to translate a selection or the page. Repeat to restore the original. PDF and text in images are unsupported. | Accessibility, browser Automation, and Allow JavaScript from Apple Events |
+| Keep Awake | Turn it on from the menu bar. A pink dot next to **fn** shows that it is active. The closed-lid mode temporarily prevents normal sleep. | Administrator approval for the closed-lid helper |
 
-Перед диктовкой или переводом установите совместимые модели в настройках fnota. Поддерживаемые языки зависят от модели. Для нормального сна выключите Keep Awake. Перед переноской Mac проверьте, что он уснул. Перед удалением приложения удалите помощник через **Settings → About fnota → Remove closed-lid helper**, если устанавливали его. [Подробности о помощнике](UniversalMac/docs/CLOSED_LID.md)
+Install compatible models in fnota before using dictation or translation. Available languages depend on the models you install. Turn off Keep Awake and check that the Mac has gone to sleep before carrying it. If you installed the helper, remove it from **Settings → About fnota → Remove closed-lid helper** before uninstalling fnota. [How the helper works](UniversalMac/docs/CLOSED_LID.md)
 
-## Данные и ограничения
+## Privacy and limitations
 
-- Диктовка и перевод выполняются на Mac. Интернет нужен для каталогов и скачивания моделей. При скачивании сторонний хост получает обычные данные сетевого запроса.
-- Диктовка использует временный аудиофайл. При штатном завершении приложение удаляет его. Текст может оставаться в системном буфере обмена и в менеджерах буфера.
-- Автоисправление использует глобальные события клавиатуры. Включайте его только если вам нужен этот режим. Разрешения можно отозвать в **System Settings → Privacy & Security**.
-- Модели занимают место на диске и могут потреблять значительные ресурсы. Проверяйте важный текст после диктовки, перевода и исправления раскладки.
-- Локальная сборка подписывается ad hoc. Apple Developer ID и нотариализация отсутствуют, поэтому Gatekeeper может заблокировать запуск на другом Mac.
+- Dictation, translation, and layout correction run on your Mac. Model catalogs and downloads use the internet and send ordinary request data to third-party hosts.
+- Dictation uses a temporary audio file that fnota removes on normal completion. Transcribed text may remain in the system clipboard or in clipboard managers.
+- Layout correction uses global keyboard events. You can disable the feature in fnota or revoke its permissions in **System Settings → Privacy & Security**.
+- Models can use substantial disk space and memory. Review important text after dictation, translation, or layout correction.
 
-## Скачать, изменить и распространить
+## Installation and source code
 
-Готовую сборку для Apple Silicon можно скачать в [Releases](https://github.com/zaza41rus/fnota/releases). Распакуйте ZIP и перенесите `fnota.app` в **Applications**. Инструкция и файл SHA-256 приложены к релизу.
+Download the ZIP from [Releases](https://github.com/zaza41rus/fnota/releases), unzip it, and move `fnota.app` to **Applications**. Each preview includes installation instructions and a SHA-256 checksum. The app is ad hoc signed and has no Apple notarization. Gatekeeper may block it on another Mac.
 
-Исходники доступны через **Code → Download ZIP** или `git clone https://github.com/zaza41rus/fnota.git`. Для своей версии используйте **Fork**. Описание проблемы можно оставить в **Issues**. Укажите версию macOS, приложение и шаги воспроизведения. Используйте вымышленные примеры текста и удаляйте личные данные из журналов.
+To get the source, choose **Code → Download ZIP** or run `git clone https://github.com/zaza41rus/fnota.git`. Use **Fork** to start your own version. For bug reports, include your macOS version, the affected app, and steps to reproduce. Use sample text and remove personal data from logs.
 
-Код fnota распространяется по [MIT](LICENSE). Лицензия разрешает использование, изменение и распространение при сохранении уведомления об авторских правах и текста лицензии. RuSwitcher, словарь иврита, нативные библиотеки и модели имеют собственные условия. [Авторы и сторонние лицензии](UniversalMac/Resources/THIRD_PARTY.md)
+fnota's original code is available under the [MIT License](LICENSE). You can use, modify, and redistribute it while preserving the copyright and license notices. RuSwitcher, the Hebrew word list, native libraries, and downloadable models retain their own terms. [Third-party notices](UniversalMac/Resources/THIRD_PARTY.md)
 
-Приложение предоставляется «как есть», без гарантий. Действуют ограничения ответственности, указанные в лицензии, в той мере, в какой это допускает применимое право.
+The software is provided as is, without warranty. The MIT License limits liability to the extent permitted by applicable law.

@@ -1,23 +1,23 @@
-# Сборка fnota
+# Build fnota
 
-Текущий проект рассчитан на Apple Silicon и macOS 27+. Используйте Xcode с SDK macOS 27, установленные Command Line Tools и рабочий `xcode-select`.
+Use an Apple Silicon Mac running macOS 27 or later, with the macOS 27 SDK, Xcode Command Line Tools, and an active Xcode installation selected with `xcode-select`.
 
-## Нативные зависимости
+## Native dependencies
 
-Разместите артефакты arm64 в `UniversalMac/Vendor`. Имена и пути используются Xcode и скриптом упаковки.
+Place these arm64 artifacts under `UniversalMac/Vendor`. The Xcode project and packaging scripts use the paths below.
 
-| Компонент | Файлы внутри Vendor |
+| Component | Paths under Vendor |
 | --- | --- |
 | [sherpa-onnx v2.0.0](https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.0), macOS arm64 shared no-TTS | `sherpa-onnx-v2.0.0-osx-arm64-shared-no-tts/lib/{libsherpa-onnx-c-api.dylib,libonnxruntime.dylib}` |
-| [CTranslate2 4.8.3](https://github.com/OpenNMT/CTranslate2/tree/v4.8.3) | Заголовки в `CTranslate2-4.8.3/include`, библиотека `native-libs/libctranslate2.4.8.3.dylib` |
-| [SentencePiece 0.2.1](https://github.com/google/sentencepiece/tree/v0.2.1) | Заголовки в `sentencepiece-0.2.1/src`, статическая библиотека `native-libs/libsentencepiece.a` |
+| [CTranslate2 4.8.3](https://github.com/OpenNMT/CTranslate2/tree/v4.8.3) | Headers in `CTranslate2-4.8.3/include`, library `native-libs/libctranslate2.4.8.3.dylib` |
+| [SentencePiece 0.2.1](https://github.com/google/sentencepiece/tree/v0.2.1) | Headers in `sentencepiece-0.2.1/src`, static library `native-libs/libsentencepiece.a` |
 
-Сборка из чистого клона требует самостоятельной подготовки библиотек. Автоматического установщика зависимостей пока нет. При сборке собственных библиотек проверьте их загрузочные пути командой `otool -L`. Скрипт перенастраивает install name CTranslate2 на путь к библиотеке внутри приложения.
+A fresh clone requires you to prepare these libraries. Check custom library load paths with `otool -L`. The build script updates the CTranslate2 install name to point inside the app bundle.
 
 ```sh
 bash UniversalMac/script/build_and_run.sh --build-only
 ```
 
-Скрипт собирает и ad hoc подписывает приложение в `UniversalMac/dist.noindex/fnota.app`. Для создания локального DMG выполните `bash UniversalMac/script/package_release.sh`. Модели устанавливаются отдельно в приложении. Библиотеки и модели сохраняют свои лицензии при распространении.
+The script creates an ad hoc signed app at `UniversalMac/dist.noindex/fnota.app`. To build a local disk image, run `bash UniversalMac/script/package_release.sh`. Install models separately in fnota. Keep the native library and model license notices when redistributing them.
 
-Исторические заметки в `UniversalMac/docs` и отдельные тестовые скрипты содержат предположения о каталогах моделей и могут расходиться с текущими настройками. Основной вход для сборки — `UniversalMac/UniversalMac.xcodeproj`.
+The main build entry point is `UniversalMac/UniversalMac.xcodeproj`. Some development notes and tests in the source tree refer to historical model paths.
