@@ -6,13 +6,13 @@ fnota is a free, open-source macOS menu bar app for **automatic keyboard layout 
 
 ## Automatic keyboard layout correction
 
-fnota uses a local engine adapted from [RuSwitcher](https://github.com/rashn/RuSwitcher) to correct words typed in the wrong keyboard layout, in the style of Punto Switcher.
+fnota uses a local engine adapted from [RuSwitcher](https://github.com/rashn/RuSwitcher) to correct words typed in the wrong keyboard layout, in the style of Punto Switcher. The adapted Swift code is built into fnota. No separate RuSwitcher installation is required.
 
 1. In macOS Keyboard settings, enable input sources for exactly two languages.
 2. In fnota, go to **Settings → Keyboard layout** and turn on **Automatically switch keyboard layouts**. The panel shows the active pair. The feature is off by default.
 3. Type normally. After **Space**, fnota can correct a recognized word and switch to the intended layout. Press **Esc** immediately to undo.
 
-Grant Accessibility access. If keyboard monitoring is unavailable, check Input Monitoring and reopen fnota. The switcher skips secure input and certain apps, and pauses while RuSwitcher is running. Names, short words, custom layouts, and unusual text fields may behave differently. Coverage across all apps and language pairs remains unverified.
+Grant Accessibility access. If keyboard monitoring is unavailable, check Input Monitoring and reopen fnota. The switcher skips secure input and certain apps, and pauses if it detects RuSwitcher running, so the two apps do not both try to correct the same input. Names, short words, custom layouts, and unusual text fields may behave differently. Coverage across all apps and language pairs remains unverified.
 
 You can also find these instructions in **Settings → About fnota** in Preview 2.
 
