@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 Preview 5
+
+- Removed the background from the icon artwork so macOS draws a single icon tile.
+
+
 ## 0.1.0 Preview 4
 
 - Updated the app icon in Finder and Settings. The menu bar keeps its fn symbol.
