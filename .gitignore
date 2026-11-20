@@ -1,0 +1,15 @@
+._*
+.DS_Store
+xcuserdata/
+*.xcuserstate
+/derived/
+**/.build/
+/UniversalMac/Vendor
+**/DevModels/
+**/dist.noindex/
+**/release/
+**/test-results/
+*.app/
+*.log
+*.dmg
+*.zip

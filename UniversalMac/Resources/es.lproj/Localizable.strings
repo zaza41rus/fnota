@@ -1,0 +1,304 @@
+"General" = "General";
+"Models" = "Modelos";
+"Keep Awake" = "Mantener despierto";
+"Settings…" = "Ajustes…";
+"Quit" = "Salir";
+"Interface language" = "Idioma de la interfaz";
+"English" = "Inglés";
+"Speech recognition" = "Reconocimiento de voz";
+"Text translation" = "Traducción de texto";
+"Active" = "Activo";
+"Use model" = "Usar modelo";
+"Use models" = "Usar modelos";
+"Delete…" = "Eliminar…";
+"Download and use" = "Descargar y usar";
+"Model source" = "Fuente del modelo";
+"Cancel download" = "Cancelar descarga";
+"Verify active model" = "Verificar modelo activo";
+"Show models in Finder" = "Mostrar modelos en Finder";
+"Choose a model for dictation. Downloading a model does not enable the feature." = "Elige un modelo de dictado. Descargarlo no activa la función.";
+"Choose the source and target languages. Translation runs locally after download." = "Elige los idiomas de origen y destino. La traducción funciona localmente tras la descarga.";
+"Active route" = "Ruta activa";
+"Offline text translation. Small dedicated language model; context and idioms may need review." = "Traducción local. Modelo de idioma compacto; revisa el contexto y las expresiones idiomáticas.";
+"Refresh model catalog" = "Actualizar catálogo";
+"Show available translation models" = "Mostrar modelos de traducción";
+"From" = "Origen";
+"To" = "Destino";
+"No supported route for this language pair." = "No hay una ruta compatible para estos idiomas.";
+"Two models via English. An intermediate translation may reduce accuracy; both models are needed." = "Dos modelos mediante inglés. El paso intermedio puede reducir la precisión; se necesitan ambos.";
+"Direct translation. A dedicated model for this language pair." = "Traducción directa. Modelo específico para estos idiomas.";
+"Download size varies by model. Installed size is shown after download." = "El tamaño depende del modelo. Tras descargarlo se muestra el espacio ocupado.";
+"Model catalog and licenses" = "Catálogo y licencias";
+"Import model folder…" = "Importar carpeta del modelo…";
+"Import model package…" = "Importar paquete del modelo…";
+"Enable Keep Awake" = "Activar Mantener despierto";
+"Duration" = "Duración";
+"Off" = "Desactivado";
+"Unlimited" = "Sin límite";
+"min" = "min";
+"0 = off · 5–120 minutes · ∞ = until you change it" = "0 = desactivado · 5–120 minutos · ∞ = hasta que lo cambies";
+"While an application is running" = "Mientras una aplicación esté abierta";
+"Any application / no restriction" = "Cualquier aplicación / sin restricción";
+"Choose application…" = "Elegir aplicación…";
+"Choose an application to keep your Mac awake while it is running" = "Elige una aplicación para mantener el Mac despierto mientras esté abierta";
+"Clear" = "Quitar";
+"Keep Awake works while the selected application is running, including in the background. The timer continues while waiting for the application." = "Funciona mientras la aplicación elegida esté abierta, también en segundo plano. El temporizador sigue contando durante la espera.";
+"Only on power adapter" = "Solo con adaptador de corriente";
+"Closing the lid and manual locking are not prevented. Stops on low battery or high temperature." = "No impide cerrar la tapa ni el bloqueo manual. Se detiene con batería baja o temperatura elevada.";
+"Set up permissions…" = "Configurar permisos…";
+"Launch at login" = "Iniciar al iniciar sesión";
+"Approve in macOS…" = "Autorizar en macOS…";
+"Enable dictation" = "Activar dictado";
+"Dictation" = "Dictado";
+"Hold shortcut to record" = "Mantener el atajo para grabar";
+"Enable translation" = "Activar traducción";
+"Translate / restore original" = "Traducir / restaurar original";
+"Hold Fn to dictate; double-tap Fn to translate or restore. Shortcuts apply immediately." = "Mantén fn para dictar; pulsa dos veces para traducir o restaurar. Los atajos se aplican de inmediato.";
+"Restore Fn controls" = "Restaurar controles con fn";
+"Each feature can be disabled independently. Delete its models in the Models tab to free disk space." = "Cada función se puede desactivar por separado. Elimina sus modelos en la pestaña Modelos para liberar espacio.";
+"Audio is deleted after recognition. Text and audio stay on your Mac; network access is used only to download models." = "El audio se elimina tras reconocerlo. El texto y el audio permanecen en tu Mac; la red solo se usa para descargar modelos.";
+"Russian" = "Ruso";
+"99 languages, including English, Russian, Spanish, Chinese and Korean" = "99 idiomas, incluidos inglés, ruso, español, chino y coreano";
+"Small download and multilingual dictation. Less accurate than larger Whisper models; short or noisy recordings may produce errors." = "Descarga pequeña y dictado multilingüe. Menos preciso que los modelos Whisper grandes; las grabaciones cortas o con ruido pueden dar errores.";
+"Russian dictation with punctuation and normalization. Russian only; larger download than Whisper Tiny." = "Dictado ruso con puntuación y normalización. Solo ruso; descarga mayor que Whisper Tiny.";
+"Russian recognition without built-in punctuation. Useful for plain transcripts; punctuation needs manual editing." = "Reconocimiento ruso sin puntuación integrada. Útil para transcripciones simples; la puntuación requiere edición manual.";
+"Sleep allowed" = "Reposo permitido";
+"Timer finished" = "Temporizador finalizado";
+"Stopped because of high temperature" = "Detenido por temperatura elevada";
+"Stopped because of battery conditions" = "Detenido por condiciones de batería";
+"Waiting for the selected application" = "Esperando la aplicación elegida";
+"macOS could not prevent sleep" = "macOS no pudo impedir el reposo";
+"Mac and display stay awake" = "El Mac y la pantalla permanecen despiertos";
+"Ready" = "Listo";
+"Delete" = "Eliminar";
+"Cancel" = "Cancelar";
+"Delete translation model?" = "¿Eliminar modelo de traducción?";
+"Model files will be deleted. You can download them again." = "Se eliminarán los archivos. Puedes volver a descargarlos.";
+"Translation model selected" = "Modelo de traducción seleccionado";
+"Translation model deleted" = "Modelo de traducción eliminado";
+"Translation route is ready" = "Ruta de traducción lista";
+"Install a translation model in Settings → Models" = "Instala un modelo de traducción en Ajustes → Modelos";
+"Model installed, verified and selected" = "Modelo instalado, verificado y seleccionado";
+"Checking SHA-256…" = "Verificando SHA-256…";
+"All SHA-256 checksums match" = "Todas las sumas SHA-256 coinciden";
+"Model deleted. You can download it again." = "Modelo eliminado. Puedes volver a descargarlo.";
+"Loading official catalog…" = "Cargando catálogo oficial…";
+"Compatibility test…" = "Comprobando compatibilidad…";
+"Checking model package…" = "Comprobando paquete del modelo…";
+"Package installed and selected" = "Paquete instalado y seleccionado";
+"Not checked" = "Sin comprobar";
+"Set up UniversalMac" = "Configurar fnota";
+"Download speech and translation models in Settings → Models. They work offline after download. Permissions must be granted on each Mac." = "Descarga los modelos en Ajustes → Modelos. Después funcionan sin conexión. Debes conceder permisos en cada Mac.";
+"1. Dictation and insertion" = "1. Dictado e inserción";
+"Microphone allowed" = "Micrófono autorizado";
+"Microphone permission needed" = "Se necesita permiso del micrófono";
+"Allow microphone" = "Permitir micrófono";
+"Automatic insertion allowed" = "Inserción automática autorizada";
+"Text insertion permission needed" = "Se necesita permiso para insertar texto";
+"Allow text insertion" = "Permitir inserción de texto";
+"This permission allows dictation to be inserted in other apps. Enable UniversalMac in Accessibility / Device Control and Data Access, then return here." = "Este permiso permite insertar el dictado en otras aplicaciones. Activa fnota en Accesibilidad / Device Control and Data Access y vuelve aquí.";
+"2. Browser translation — optional" = "2. Traducción del navegador — opcional";
+"Open a regular page in the browser and approve the macOS automation request during the check." = "Abre una página normal y autoriza la automatización de macOS durante la comprobación.";
+"Check Chrome" = "Comprobar Chrome";
+"Chrome: View → Developer → Allow JavaScript from Apple Events must be checked." = "Chrome: activa View → Developer → Allow JavaScript from Apple Events.";
+"Check Safari" = "Comprobar Safari";
+"Safari: enable Develop → Allow JavaScript from Apple Events. Show Develop in Safari Settings → Advanced if needed." = "Safari: activa Develop → Allow JavaScript from Apple Events. Si es necesario, muestra Develop en Safari Settings → Advanced.";
+"Refresh status" = "Actualizar estado";
+"Finish setup" = "Finalizar configuración";
+"Fn: hold to dictate, double-tap to translate or restore. Change shortcuts in Settings." = "fn: mantén para dictar, pulsa dos veces para traducir o restaurar. Cambia los atajos en Ajustes.";
+"Recording locally…" = "Grabando localmente…";
+"Recognizing locally…" = "Reconociendo localmente…";
+"No speech detected" = "No se detectó voz";
+"Text inserted and copied" = "Texto insertado y copiado";
+"Approve login launch in macOS Settings" = "Autoriza el inicio automático en Ajustes de macOS";
+"Login launch updated" = "Inicio automático actualizado";
+"Wait for dictation to finish" = "Espera a que termine el dictado";
+"Translation cancelled" = "Traducción cancelada";
+"Original selection restored" = "Selección original restaurada";
+"Original page restored" = "Página original restaurada";
+"Selection translated" = "Selección traducida";
+"Page translated" = "Página traducida";
+"Translation cancelled, original restored" = "Traducción cancelada, original restaurado";
+"Press shortcut… Esc to cancel" = "Pulsa el atajo… Esc para cancelar";
+"Space" = "Espacio";
+"Install a dictation model in Settings → Models" = "Instala un modelo de dictado en Ajustes → Modelos";
+"Settings" = "Ajustes";
+"Permissions" = "Permisos";
+"Model catalog" = "Catálogo de modelos";
+"Each feature can be disabled independently. Delete unused models in the sections below to free disk space." = "Cada función se puede desactivar por separado. Elimina los modelos que no uses en las secciones de abajo para liberar espacio.";
+"Selected application closed" = "La aplicación seleccionada se ha cerrado";
+"Expanded" = "Expandido";
+"Collapsed" = "Contraído";
+"Press keys\u2026" = "Pulsa…";
+"Application" = "Aplicación";
+"Any" = "Cualquiera";
+"0 = off · 1–120 minutes · ∞ = until you change it" = "0 = desactivado · 1–120 minutos · ∞ = hasta que lo cambies";
+"Selecting an application in the menu enables unlimited Keep Awake until that application closes." = "Elegir una aplicación en el menú activa el modo sin límite hasta que se cierre.";
+"Time" = "Tiempo";
+"Minutes" = "Minutos";
+"Start timer" = "Iniciar temporizador";
+"Browser translation" = "Traducción en el navegador";
+"Check and set up" = "Comprobar y configurar";
+"Microphone access is needed for dictation." = "El dictado necesita acceso al micrófono.";
+"Accessibility access is needed for shortcuts and text insertion." = "Los atajos y la inserción de texto necesitan permiso de Accesibilidad.";
+"Browser automation permission is needed." = "Se necesita permiso para automatizar el navegador.";
+"Allow microphone access for UniversalMac in macOS Settings, then return here." = "Permite el micrófono para fnota en Ajustes de macOS y vuelve aquí.";
+"Allow UniversalMac in Accessibility / Device Control and Data Access, then return here." = "Activa fnota en Accesibilidad / Device Control and Data Access y vuelve aquí.";
+"Allow browser automation in macOS Settings → Privacy & Security → Automation." = "Autoriza el navegador en Ajustes de macOS → Privacidad y seguridad → Automatización.";
+"Press and hold Fn" = "Mantén fn";
+"Double-press Fn" = "Pulsa fn dos veces";
+"Model" = "Modelo";
+"Model not installed" = "Modelo no instalado";
+"Install model" = "Instalar modelo";
+"Choose a model to enable dictation. Delete models you no longer need to free space." = "Elige un modelo para activar el dictado. Elimina los modelos que no uses para liberar espacio.";
+"Microphone" = "Micrófono";
+"Text insertion and shortcuts" = "Inserción de texto y atajos";
+"Approve the system request or enable access in macOS Settings. Return here to continue automatically." = "Autoriza la solicitud o activa el acceso en Ajustes de macOS. Vuelve aquí para continuar automáticamente.";
+"Remaining checks" = "Comprobaciones pendientes";
+"Continue" = "Continuar";
+"Checking permissions…" = "Comprobando permisos…";
+"All required permissions are granted" = "Todos los permisos necesarios están concedidos";
+"Done" = "Listo";
+"Text appears in the active input field and is also available in the clipboard." = "El texto aparece en el campo activo y también está disponible en el portapapeles.";
+"If you select text on the page, only the selected text is translated." = "Si seleccionas texto en la página, solo se traduce el texto seleccionado.";
+"AI model" = "Modelo de IA";
+"Keep macOS awake" = "Mantener macOS despierto";
+
+"Fast multilingual dictation with punctuation. Supports 25 European languages; not intended for Chinese, Japanese or Korean." = "Dictado rápido con puntuación en 25 idiomas europeos. No admite chino, japonés ni coreano.";
+
+"Fast dictation for Chinese, English, Japanese, Korean and Cantonese. Does not support Russian; subject to the FunASR model license." = "Dictado rápido en chino, inglés, japonés, coreano y cantonés. No admite ruso. Sujeto a la licencia de modelos FunASR.";
+
+"Smallest multilingual Whisper. Fast and compact; more errors on short or noisy recordings." = "La Whisper multilingüe más pequeña. Rápida y compacta; más errores en grabaciones cortas o con ruido.";
+
+"Compact multilingual Whisper. More capable than Tiny, but may miss words or grammar." = "Whisper multilingüe compacta. Más capaz que Tiny, pero puede omitir palabras o cometer errores gramaticales.";
+
+"Balanced multilingual Whisper. Needs more memory and processing than Base." = "Whisper multilingüe equilibrada. Necesita más memoria y procesamiento que Base.";
+
+"Larger multilingual Whisper for better accuracy. Slower and uses more memory than Small." = "Whisper multilingüe más grande para mayor precisión. Más lenta y consume más memoria que Small.";
+
+"Multilingual Whisper optimized for speed. A larger download, with faster decoding than Large v3." = "Whisper multilingüe optimizada para velocidad. Descarga grande, pero decodifica más rápido que Large v3.";
+
+"Largest multilingual Whisper in this catalog. High memory use and the slowest decoding; accuracy still depends on the recording." = "La Whisper multilingüe más grande del catálogo. Alto uso de memoria y decodificación más lenta; la precisión depende de la grabación.";
+
+"25 European languages, including English, Russian, Spanish, French and German" = "25 idiomas europeos, incluidos inglés, ruso, español, francés y alemán";
+
+"Chinese, English, Japanese, Korean and Cantonese" = "Chino, inglés, japonés, coreano y cantonés";
+
+"Unsupported speech model" = "Modelo de reconocimiento de voz no compatible";
+
+"About fnota" = "Acerca de fnota";
+
+"Version" = "Versión";
+
+"How it works" = "Cómo funciona";
+
+"Privacy and data" = "Privacidad y datos";
+
+"Models and internet" = "Modelos e internet";
+
+"Limitations" = "Limitaciones";
+
+"Hold fn to record speech. Release it to recognize and insert text at the cursor; the result is also copied to the clipboard. Mac audio is muted during recording and restored afterwards." = "Mantén fn para grabar voz. Suéltala para reconocer e insertar el texto en el cursor; también se copia al portapapeles. El audio del Mac se silencia durante la grabación y se restaura después.";
+
+"Double-press fn to translate selected text in Safari or Chrome. Without a selection, the page is translated. Repeat the gesture to restore the original. Translation languages depend on the installed models." = "Pulsa fn dos veces para traducir el texto seleccionado en Safari o Chrome. Sin selección, se traduce la página. Repite el gesto para restaurar el original. Los idiomas dependen de los modelos instalados.";
+
+"Speech recognition and translation run on your Mac after models are downloaded. Recorded audio and translated text are not sent to a cloud AI service. Temporary microphone recordings are deleted after recognition. Dictated text stays in the system clipboard until it is replaced or cleared." = "El reconocimiento y la traducción se ejecutan en tu Mac tras descargar los modelos. El audio y el texto no se envían a un servicio de IA en la nube. Las grabaciones temporales se eliminan tras el reconocimiento. El texto dictado permanece en el portapapeles hasta reemplazarlo o borrarlo.";
+
+"Microphone access is needed for recording. Accessibility allows global keyboard gestures and insertion into other apps. Browser translation needs Automation access and JavaScript from Apple Events enabled in the browser. You can revoke these permissions in macOS Settings." = "El micrófono permite grabar. Accesibilidad permite los gestos globales del teclado y la inserción en otras apps. La traducción requiere Automatización y JavaScript desde Apple Events en el navegador. Puedes revocar los permisos en Ajustes de macOS.";
+
+"Internet access is used to fetch model catalogs and download models from third-party sources. Downloads are checked against SHA-256 checksums. You can switch or delete models in the Dictation and Text translation tabs; model licenses differ." = "Internet se usa para obtener catálogos y descargar modelos de terceros. Las descargas se verifican con SHA-256. Puedes cambiar o eliminar modelos en las pestañas de dictado y traducción; sus licencias varían.";
+
+"Keep Awake prevents idle sleep while enabled. A timer turns it off when time runs out, even if an application is selected. It does not prevent manual locking or closing the lid." = "El modo de vigilia evita el reposo por inactividad. El temporizador lo desactiva al terminar, incluso con una aplicación seleccionada. No impide el bloqueo manual ni cerrar la tapa.";
+
+"Recognition and translation can contain errors. Check important text before using it. Large models require more disk space, memory and processing time. This local build is ad-hoc signed and is not notarized by Apple." = "El reconocimiento y la traducción pueden contener errores. Revisa los textos importantes. Los modelos grandes requieren más espacio, memoria y tiempo. Esta compilación local tiene firma ad-hoc y no está notarizada por Apple.";
+
+"In Safari, open Safari → Settings… → Developer and turn on ‘Allow JavaScript from Apple Events’. If Developer is hidden, first enable web developer features in Safari → Settings… → Advanced. Return here and click Continue." = "En Safari, abre Safari → Settings… → Developer y activa «Allow JavaScript from Apple Events». Si Developer no aparece, activa primero las funciones para desarrolladores web en Settings… → Advanced. Vuelve aquí y pulsa Continuar.";
+
+"In Chrome, open View → Developer and check ‘Allow JavaScript from Apple Events’ in the window you use for translation. Return here and click Continue." = "En Chrome, abre View → Developer y marca «Allow JavaScript from Apple Events» en la ventana donde traduces. Vuelve aquí y pulsa Continuar.";
+
+"Safari: open Safari → Settings… → Developer and turn on ‘Allow JavaScript from Apple Events’. If Developer is hidden, enable web developer features in Settings… → Advanced." = "Safari: abre Safari → Settings… → Developer y activa «Allow JavaScript from Apple Events». Si Developer no aparece, activa las funciones para desarrolladores web en Settings… → Advanced.";
+
+"Keep working with lid closed" = "Trabajar con la tapa cerrada";
+
+"Closed-lid mode active" = "Modo de tapa cerrada activo";
+
+"Enable closed-lid mode?" = "¿Activar el modo de tapa cerrada?";
+
+"Install helper" = "Instalar asistente";
+
+"fnota will install a system helper that temporarily prevents sleep even when the lid is closed. macOS will ask for administrator approval. The helper restores the previous sleep setting when the session ends or fnota stops responding. Password and manual lock settings are unchanged." = "fnota instalará un asistente del sistema que impide temporalmente el reposo, incluso con la tapa cerrada. macOS pedirá aprobación de administrador. Se restaura el ajuste anterior al terminar la sesión o si fnota deja de responder. La contraseña y el bloqueo manual no cambian.";
+
+"Closed-lid helper is unavailable. Reinstall it from this option." = "El asistente no está disponible. Reinstálalo desde esta opción.";
+
+"Closed-lid mode could not be applied or restored. Open this option and try again." = "No se pudo aplicar el modo de tapa cerrada o restaurar el reposo. Abre esta opción y vuelve a intentarlo.";
+
+"Waiting for the closed-lid helper…" = "Esperando al asistente del sistema…";
+
+"Closed-lid helper installed" = "Asistente de tapa cerrada instalado";
+
+"Closed-lid helper is missing from the application" = "Falta el asistente del sistema en la aplicación";
+
+"Remove closed-lid helper…" = "Eliminar asistente de tapa cerrada…";
+
+"Closed-lid helper removed" = "Asistente de tapa cerrada eliminado";
+
+"Keep Awake prevents idle sleep. Enable Keep working with lid closed to install the optional system helper with administrator approval. This temporarily disables system sleep, including lid-triggered and manual sleep. A timer, session end, low battery, high temperature or a lost connection to fnota restores the previous sleep setting. Manual locking and password settings are unchanged." = "El modo de vigilia evita el reposo por inactividad. Activa Trabajar con la tapa cerrada para instalar el asistente con aprobación de administrador. Se desactiva temporalmente el reposo del sistema, incluido el reposo al cerrar la tapa y el manual. El temporizador, el fin de sesión, la batería baja, la temperatura alta o la pérdida de conexión restauran el ajuste anterior. El bloqueo manual y la contraseña no cambian.";
+
+"Keep Awake includes working with the lid closed. On first use, macOS asks for administrator approval to install the system helper. This temporarily disables system sleep, including lid-triggered and manual sleep. A timer, session end, low battery, high temperature or a lost connection to fnota restores the previous sleep setting. Manual locking and password settings are unchanged." = "El modo de vigilia incluye el trabajo con la tapa cerrada. En el primer uso, macOS pide aprobación de administrador para instalar el asistente. Se desactiva temporalmente el reposo del sistema, incluido el reposo al cerrar la tapa y el manual. El temporizador, el fin de sesión, la batería baja, la temperatura alta o la pérdida de conexión restauran el ajuste anterior. El bloqueo manual y la contraseña no cambian.";
+
+"AI models" = "Modelos de IA";
+
+"More" = "Más";
+
+"Learn more…" = "Más información…";
+
+"Installed models" = "Modelos instalados";
+
+"Swap languages" = "Intercambiar idiomas";
+
+"Import…" = "Importar…";
+
+"Configure permissions…" = "Configurar permisos…";
+
+"Open Automation settings" = "Abrir ajustes de automatización";
+
+"Manage…" = "Gestionar…";
+
+"Allow…" = "Permitir…";
+
+"System helper" = "Asistente del sistema";
+
+"Installed" = "Instalado";
+
+"Open browser to check" = "Abre el navegador para comprobar";
+
+"Allowed" = "Permitido";
+
+"Action required" = "Se requiere configuración";
+
+"The system helper enables working with the lid closed. Administrator approval is needed once." = "El asistente permite trabajar con la tapa cerrada. Se necesita aprobación de administrador una vez.";
+
+"Back" = "Atrás";
+
+"Forward" = "Adelante";
+
+"Prevents your Mac from going to sleep." = "Evita que tu Mac entre en reposo.";
+
+"Hold fn to dictate text in any application." = "Mantén fn para dictar texto en cualquier aplicación.";
+
+"Double-press fn to translate a page or selected text in your browser." = "Pulsa fn dos veces para traducir una página o el texto seleccionado en el navegador.";
+
+"Permission required" = "Se requiere permiso";
+
+"Keyboard layout" = "Distribución del teclado";
+"Corrects a recognized word after Space. Press Esc immediately to undo." = "Corrige las palabras reconocidas al pulsar Espacio. Pulsa Esc inmediatamente para deshacer el cambio.";
+"Allow Accessibility…" = "Permitir Accesibilidad…";
+"If switching is unavailable, allow fnota in Input Monitoring and reopen the app." = "Si el cambio no está disponible, permite que fnota supervise la entrada y vuelve a abrir la app.";
+"Open Input Monitoring" = "Abrir Monitorización de entrada";
+
+"Features" = "Funciones";
+
+"Automatic switching is paused while RuSwitcher is running." = "El cambio automático se pausa mientras RuSwitcher está abierto.";
+"Automatically switch keyboard layouts" = "Cambiar automáticamente la distribución del teclado";
+"Active pair" = "Par activo";
+"Enable keyboard layouts for exactly two languages in macOS Keyboard settings." = "Activa distribuciones de teclado para exactamente dos idiomas en los ajustes de teclado de macOS.";

@@ -1,0 +1,17 @@
+Whisper Base, Small, Medium, Large v3 and Turbo:
+OpenAI Whisper, MIT license (see Whisper-MIT.txt).
+ONNX exports by csukuangfj, pinned revisions and SHA-256 in ModelManifest.swift.
+https://github.com/openai/whisper
+
+Parakeet TDT 0.6B v3:
+Copyright NVIDIA. Licensed under Creative Commons Attribution 4.0 International.
+https://creativecommons.org/licenses/by/4.0/
+https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3
+ONNX INT8 export by csukuangfj (see Parakeet-export-README.md).
+The export quantizes the model for CPU inference; original weights are not bundled.
+
+SenseVoice Small:
+FunAudioLLM / Tongyi Speech Team, Alibaba Group.
+Subject to FunASR Model License 1.1 (see full license in this folder).
+https://huggingface.co/FunAudioLLM/SenseVoiceSmall
+ONNX INT8 export by csukuangfj. Original weights are not bundled.

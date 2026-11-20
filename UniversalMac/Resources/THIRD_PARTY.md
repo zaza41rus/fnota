@@ -1,0 +1,14 @@
+# Native dependencies and model provenance
+
+- sherpa-onnx v2.0.0, official macOS arm64 shared no-TTS release, Apache-2.0. Archive SHA-256: 459da70b077ce66291292c3e08c08b89fa66b1d0a778c52460c05d36728715e4.
+- ONNX Runtime native library supplied with that release. MIT; license included.
+- CTranslate2 4.8.3, MIT. Native arm64 library; no Python interpreter is bundled or used at runtime.
+- SentencePiece 0.2.1, Apache-2.0; native static library.
+- GigaAM v3 E2E CTC INT8, third-party sherpa-onnx-compatible export by Smirnov75, MIT according to pinned model card. Revision 6888903da215c7735f51101d939f3bfa679fb2b8; model SHA-256 0aacb41f70f0f5aaac4b45dd430337b9e16b180f22c72af04db8516e7609c3c0; tokens SHA-256 f8eb9b115e2748db9c40a5897cae11dd0678cc0b40fd7e25f8c43b3bf28715e4. Model card included.
+- English-to-Russian: existing Argos-compatible en_ru 1.9 package, CTranslate2 model and SentencePiece tokenizer only. Model weights are downloaded separately. Original model README, metadata and dataset credits are preserved with each installed translation model in Application Support/UniversalMac/Models/Translation. No Stanza runtime or Handy resources are bundled.
+
+Runtime inference is local. No account, paid API, Python process or HTTP translation service is required by this app.
+- Whisper Tiny multilingual: OpenAI Whisper MIT weights, sherpa-onnx-compatible INT8 export by csukuangfj (Hugging Face revision 65176e2deb88badc814a94058666cadccc29b61c). Downloaded separately; license in Licenses/Whisper-MIT.txt.
+- Argos language models are downloaded from the official Argos package index. Individual package README/metadata are preserved with installed models; their model/data credits may differ. Both SentencePiece and native subword-nmt BPE tokenization are supported. No Python/Moses/Stanza runtime is bundled.
+- RuSwitcher v3.5.0 (build 62), Rashns, MIT. The keyboard monitor, layout mapping, word detection and typing engine are adapted from [commit c32a3b9](https://github.com/rashn/RuSwitcher/tree/c32a3b98fb73d11dd9c4d43879f8868cbbd2e1c2). License in Licenses/RuSwitcher-MIT.txt. fnota supplies its own settings, implements Esc for undo, and uses local macOS dictionaries without upstream's optional dictionary downloads.
+- The Hebrew frequency list in `Services/RuSwitcher/HebrewCommonWords.swift` is adapted from Hermit Dave’s [FrequencyWords, OpenSubtitles 2018 Hebrew list](https://github.com/hermitdave/FrequencyWords/blob/master/content/2018/he/he_full.txt). The list was filtered to 3,000 common words of at least three characters and embedded in Swift. The adapted data remains under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
