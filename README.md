@@ -1,5 +1,7 @@
 # fnota
 
+<img src="UniversalMac/Resources/AppIcon-preview.png" width="96" alt="fnota app icon">
+
 fnota is a free, open-source macOS menu bar app for **automatic keyboard layout correction**, on-device dictation, and browser translation. It can also temporarily keep your Mac awake.
 
 **Requires Apple Silicon (M1 or later) and macOS 27 or later.** [Download the preview](https://github.com/zaza41rus/fnota/releases) · [Build from source](BUILD.md) · [Changelog](CHANGELOG.md)

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0 Preview 4
+
+- Updated the app icon in Finder and Settings. The menu bar keeps its fn symbol.
+
 ## 0.1.0 Preview 3
 
 - Simplified the keyboard layout correction description in About fnota and the public documentation. Third-party attribution remains in the bundled license notices.
