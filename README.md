@@ -22,16 +22,16 @@ You can also find these instructions in **Settings → About fnota** in the curr
 
 | Feature | How to use it | Permissions |
 | --- | --- | --- |
-| Dictation | Hold **fn** to record and release it to transcribe and insert text. The result is also copied to the clipboard. | Microphone and Accessibility |
+| Dictation | Hold **fn** to dictate. Most models insert the full transcript on release. T-one offers experimental live Russian dictation. The soft wave at the bottom of the focused window indicates recording. | Microphone and Accessibility |
 | Browser translation | Double-press **fn** in Safari or Chrome to translate a selection or the page. Repeat to restore the original. PDF and text in images are unsupported. | Accessibility, browser Automation, and Allow JavaScript from Apple Events |
 | Keep Awake | Turn it on from the menu bar. A pink dot next to **fn** shows that it is active. The closed-lid mode temporarily prevents normal sleep. | Administrator approval for the closed-lid helper |
 
-Install compatible models in fnota before using dictation or translation. Available languages depend on the models you install. Turn off Keep Awake and check that the Mac has gone to sleep before carrying it. If you installed the helper, remove it from **Settings → About fnota → Remove closed-lid helper** before uninstalling fnota. [How the helper works](UniversalMac/docs/CLOSED_LID.md)
+Install compatible models in fnota before using dictation or translation. Available languages depend on the models you install. Live insertion depends on the editor. If fnota cannot insert the entire transcript, it copies the remaining text for manual paste. Turn off Keep Awake and check that the Mac has gone to sleep before carrying it. If you installed the helper, remove it from **Settings → About fnota → Remove closed-lid helper** before uninstalling fnota. [How the helper works](UniversalMac/docs/CLOSED_LID.md)
 
 ## Privacy and limitations
 
 - Dictation, translation, and layout correction run on your Mac. Model catalogs and downloads use the internet and send ordinary request data to third-party hosts.
-- Dictation uses a temporary audio file that fnota removes on normal completion. Transcribed text may remain in the system clipboard or in clipboard managers.
+- Models that insert after recording use a temporary audio file that fnota removes on normal completion. Live dictation processes microphone audio in memory. Transcribed text may remain in the system clipboard or in clipboard managers.
 - Layout correction uses global keyboard events. You can disable the feature in fnota or revoke its permissions in **System Settings → Privacy & Security**.
 - Models can use substantial disk space and memory. Review important text after dictation, translation, or layout correction.
 

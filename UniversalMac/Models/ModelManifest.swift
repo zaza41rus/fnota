@@ -2,6 +2,9 @@ import Foundation
 struct ModelFile: Codable, Sendable { let name: String; let remote: String; let sha256: String; let bytes: Int64 }
 struct SpeechModel: Codable, Sendable, Identifiable {
  let id: String; let title: String; let license: String; let source: String; let files: [ModelFile]
+ enum DictationMode { case afterRecording, live }
+ var dictationMode: DictationMode { id == Self.tOne.id ? .live : .afterRecording }
+ var dictationModeLabel: String { dictationMode == .live ? "Live dictation" : "Inserts after recording" }
  enum Architecture:Int32 { case ctc=0,whisper=1,parakeet=2,senseVoice=3 }
  var architecture:Architecture {
   if id.hasPrefix("whisper-") { return .whisper }
@@ -10,6 +13,7 @@ struct SpeechModel: Codable, Sendable, Identifiable {
   return .ctc
  }
  var purpose:String {
+  if dictationMode == .live { return "Streams Russian dictation locally and inserts words as you speak." }
   switch architecture {
   case .parakeet:return "Fast multilingual dictation with punctuation. Supports 25 European languages; not intended for Chinese, Japanese or Korean."
   case .senseVoice:return "Fast dictation for Chinese, English, Japanese, Korean and Cantonese. Does not support Russian; subject to the FunASR model license."
@@ -33,7 +37,10 @@ struct SpeechModel: Codable, Sendable, Identifiable {
   }
  }
  var size:String { ByteCountFormatter.string(fromByteCount:bytes,countStyle:.file) }
- static var catalog:[SpeechModel] { [.gigaAM,.ctc,.whisperTiny]+expanded }
+ static var catalog:[SpeechModel] { [.gigaAM,.tOne,.ctc,.whisperTiny]+expanded }
+ static let tOne = SpeechModel(id:"t-one-russian-streaming",title:"T-one · Russian",license:"Apache-2.0",source:"csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08 · 9d63341",files:[
+ ModelFile(name:"model.onnx",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08/resolve/9d63341e0f2d8a8b2edaa825aa1fcfe3c5283b47/model.onnx",sha256:"5ded080e2a6c86ecc11bcb0902d77524eb3e8b0844cb0c0754347f5aafb4dabc",bytes:144193702),
+ ModelFile(name:"tokens.txt",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08/resolve/9d63341e0f2d8a8b2edaa825aa1fcfe3c5283b47/tokens.txt",sha256:"27f7b3ba2096c572375fba1a6b29af1f80d86e08a329940612908112695f97e0",bytes:202)])
  static let whisperTiny = SpeechModel(id:"whisper-tiny-multilingual-int8",title:"Whisper Tiny · multilingual",license:"MIT",source:"csukuangfj/sherpa-onnx-whisper-tiny · 65176e2",files:[
  ModelFile(name:"model.onnx",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-whisper-tiny/resolve/65176e2deb88badc814a94058666cadccc29b61c/tiny-encoder.int8.onnx",sha256:"d24fb083ae3b1041fc24e97971d60e280c9342201fbb67b0ab428a8b4a51a434",bytes:12937772),
  ModelFile(name:"decoder.onnx",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-whisper-tiny/resolve/65176e2deb88badc814a94058666cadccc29b61c/tiny-decoder.int8.onnx",sha256:"d2fece8dd42771f1df975c6c0445770d0c292bf7547c2cae04a6c0cc57540925",bytes:89855401),

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 Preview 7
+
+- Added a soft, voice-reactive wave inside the bottom edge of the dictation window.
+- Added experimental local live Russian dictation with T-one and mode labels in the model list. Other models continue to insert the full transcript after recording. Live insertion depends on the focused editor.
+
 ## 0.1.0 Preview 6
 
 - Added light and dark app icons. Settings follows the window appearance, and the bundled layered icon supports macOS icon appearance controls.

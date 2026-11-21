@@ -305,3 +305,11 @@
 
 "Automatic keyboard layout correction" = "Corrección automática de la distribución del teclado";
 "Enable this feature in Settings → Keyboard layout and add input sources for exactly two languages in macOS. After you press Space, fnota can correct a word typed in the wrong layout and switch to the intended layout. Press Esc immediately to undo." = "Activa esta función en Ajustes → Distribución del teclado y añade fuentes de entrada para exactamente dos idiomas en macOS. Al pulsar Espacio, fnota puede corregir una palabra escrita en la distribución equivocada y cambiar a la correcta. Pulsa Esc inmediatamente para deshacer el cambio.";
+"Live dictation" = "Dictado en directo";
+"Inserts after recording" = "Inserta al terminar la grabación";
+"Streams Russian dictation locally and inserts words as you speak." = "Reconoce ruso localmente e inserta palabras mientras hablas.";
+"Listening and inserting…" = "Escuchando e insertando texto…";
+"Finishing dictation…" = "Finalizando el dictado…";
+"Remaining dictation copied. Paste with ⌘V." = "Se copió el resto del dictado. Pégalo con ⌘V.";
+"Could not load the live dictation model" = "No se pudo cargar el modelo de dictado en directo";
+"Live insertion unavailable in this field" = "La inserción en directo no está disponible en este campo";

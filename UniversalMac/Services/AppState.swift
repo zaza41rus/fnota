@@ -8,6 +8,13 @@ import ApplicationServices
  let overlay = Overlay()
  let audio = AudioCapture()
  let speech = GigaAMEngine()
+ private var liveSpeech:LiveSpeechSession?
+ private var liveID:UUID?
+ private var liveInsertedCount = 0
+ private var liveInsertionBlocked = false
+ private var livePendingWords:[String] = []
+ private var liveInsertionTask:Task<Void,Never>?
+ private var batchModelFolder:URL?
  let translator = LocalTranslationEngine()
  let secondTranslator=LocalTranslationEngine()
  var uiLanguage=UserDefaults.standard.string(forKey:"uiLanguage") ?? "en" { didSet { UserDefaults.standard.set(uiLanguage,forKey:"uiLanguage") } }
@@ -79,7 +86,10 @@ import ApplicationServices
     if self.voiceBinding.isFn || self.holdToTalk {
      self.voiceHeld = down
      if down { self.heldSession = true; Task { await self.beginRecording() } }
-     else if self.recording,self.heldSession { Task { await self.toggleRecording() } }
+     else if self.heldSession {
+      self.overlay.hideRecording()
+      if self.recording { Task { await self.toggleRecording() } }
+     }
     } else if down { self.heldSession = false; Task { await self.toggleRecording() } }
    }
    if id == 2,down,self.translationEnabled { self.translateContext() }
@@ -122,21 +132,60 @@ import ApplicationServices
   guard !recording,!startingRecording,!processing else { return }
   guard models.installed else { message = "Install a dictation model in Settings → Models"; overlay.show(message); return }
   startingRecording = true
-  await bridge.prepareDictationTarget()
+  let model = models.selected
+  let folder = models.folder(model)
+  await bridge.prepareDictationTarget(live:model.dictationMode == .live)
+  let level:@Sendable (Float)->Void = { [weak overlay] level in
+   Task { @MainActor in overlay?.updateRecordingLevel(level) }
+  }
   do {
-   try await audio.start(); recording = true; startingRecording = false
-   message = heldSession ? "Recording · release \(voiceBinding.label) to insert text" : "Recording · press \(voiceBinding.label) to stop"
+   if model.dictationMode == .live {
+    let id = UUID()
+    let live = LiveSpeechSession { [weak self] words in
+     Task { @MainActor [weak self] in
+      guard let self,self.liveID == id else { return }
+      self.queueLiveWords(words)
+     }
+    }
+    let ready = live.prepare(model:model,folder:folder)
+    if heldSession && !voiceHeld { startingRecording = false; return }
+    liveID = id
+    liveInsertedCount = 0
+    liveInsertionBlocked = false
+    livePendingWords = []
+    try await audio.start(live:live,level:level)
+    showDictationGlow()
+    do {
+     for try await _ in ready {}
+    } catch {
+     audio.stopCapture()
+     throw error
+    }
+    liveSpeech = live
+   } else {
+    try await audio.start(level:level)
+    showDictationGlow()
+    batchModelFolder = folder
+   }
+   recording = true; startingRecording = false
+   message = liveSpeech != nil ? "Listening and inserting…" : heldSession ? "Recording · release \(voiceBinding.label) to insert text" : "Recording · press \(voiceBinding.label) to stop"
    overlay.show(message,persistent:true)
    if heldSession && !voiceHeld { await toggleRecording() }
-  } catch { startingRecording = false; message = error.localizedDescription; overlay.show(message) }
+  } catch { liveID = nil; startingRecording = false; overlay.hideRecording(); message = error.localizedDescription; overlay.show(message) }
  }
  func toggleRecording() async {
   guard !processing else { return }
   if recording {
+   overlay.hideRecording()
+   if let live = liveSpeech {
+    await finishLiveDictation(live)
+    return
+   }
    recording = false; processing = true; message = "Recognizing locally…"; overlay.show(message,persistent:true)
    do {
     let file = try audio.stop(); defer { try? FileManager.default.removeItem(at:file) }
-    let text = try await speech.transcribe(file:file,modelFolder:models.folder())
+    guard let folder = batchModelFolder else { throw AppFailure.message("Recording has not started") }
+    let text = try await speech.transcribe(file:file,modelFolder:folder)
     if !text.isEmpty { result += (result.isEmpty || result.last?.isWhitespace == true ? "" : " ") + text }
     if text.isEmpty { message = "No speech detected" }
     else {
@@ -147,8 +196,56 @@ import ApplicationServices
     }
     overlay.show(message)
    } catch { message = error.localizedDescription; overlay.show(message) }
+   batchModelFolder = nil
    processing = false
   } else { heldSession = false; await beginRecording() }
+ }
+
+ private func showDictationGlow() {
+  guard !heldSession || voiceHeld else { return }
+  overlay.showRecording { [weak bridge] in bridge?.dictationWindowFrame() }
+ }
+
+ private func queueLiveWords(_ words:[String]) {
+  guard !liveInsertionBlocked,words.count > livePendingWords.count else { return }
+  livePendingWords = words
+  guard liveInsertionTask == nil else { return }
+  liveInsertionTask = Task {
+   defer { liveInsertionTask = nil }
+   while !liveInsertionBlocked,liveInsertedCount < livePendingWords.count {
+    let words = livePendingWords
+    let text = words.dropFirst(liveInsertedCount).joined(separator:" ")
+    if await bridge.insertLiveDictation(text,continuation:liveInsertedCount > 0) {
+     liveInsertedCount = words.count
+    } else {
+     liveInsertionBlocked = true
+     if recording { overlay.show("Live insertion unavailable in this field",persistent:true) }
+    }
+   }
+  }
+ }
+
+ private func finishLiveDictation(_ live:LiveSpeechSession) async {
+  recording = false
+  processing = true
+  liveID = nil
+  audio.stopCapture()
+  overlay.show("Finishing dictation…",persistent:true)
+  let words = await live.finish()
+  queueLiveWords(words)
+  await liveInsertionTask?.value
+  let text = words.joined(separator:" ")
+  if !text.isEmpty { result += (result.isEmpty || result.last?.isWhitespace == true ? "" : " ") + text }
+  let remaining = words.dropFirst(liveInsertedCount).joined(separator:" ")
+  if !text.isEmpty {
+   NSPasteboard.general.clearContents()
+   let clipboard = remaining.isEmpty ? text : (liveInsertedCount > 0 ? " " : "") + remaining
+   NSPasteboard.general.setString(clipboard,forType:.string)
+  }
+  message = text.isEmpty ? "No speech detected" : remaining.isEmpty ? "Text inserted and copied" : "Remaining dictation copied. Paste with ⌘V."
+  liveSpeech = nil
+  processing = false
+  overlay.show(message)
  }
 
  func login(_ enabled:Bool) {

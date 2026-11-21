@@ -21,7 +21,7 @@ import ApplicationServices
   for panel in panels { panel.orderOut(nil) }
   return hadFocus
  }
- func prepareDictationTarget() async {
+ func prepareDictationTarget(live:Bool = false) async {
   let panelHadFocus=Self.dismissStatusPanels(NSApp.windows,keyWindow:NSApp.keyWindow)
   // Restore the previous app only when leaving our transient status panel.
   // Fn in Settings keeps that window open and does not activate another app.
@@ -32,23 +32,42 @@ import ApplicationServices
     try? await Task.sleep(for:.milliseconds(20))
    }
   }
-  captureTarget()
+  if live,AXIsProcessTrusted(),let app = NSWorkspace.shared.frontmostApplication {
+   let root = AXUIElementCreateApplication(app.processIdentifier)
+   switch app.bundleIdentifier {
+   case "com.google.Chrome":
+    AXUIElementSetAttributeValue(root,"AXEnhancedUserInterface" as CFString,kCFBooleanTrue)
+   case "com.openai.codex":
+    AXUIElementSetAttributeValue(root,"AXManualAccessibility" as CFString,kCFBooleanTrue)
+   default: break
+   }
+  }
+  captureTarget(live:live)
  }
  private(set) var failureReason = ""
  private func focusedElement(_ appPID:pid_t)->AXUIElement? {
-  for root in [AXUIElementCreateSystemWide(),AXUIElementCreateApplication(appPID)] {
+  let app = AXUIElementCreateApplication(appPID)
+  let system = AXUIElementCreateSystemWide()
+  for root in liveTarget ? [app,system] : [system,app] {
    var value:CFTypeRef?
-   if AXUIElementCopyAttributeValue(root,kAXFocusedUIElementAttribute as CFString,&value) == .success,let value,CFGetTypeID(value) == AXUIElementGetTypeID() { return value as! AXUIElement }
+   if AXUIElementCopyAttributeValue(root,kAXFocusedUIElementAttribute as CFString,&value) == .success,let value,CFGetTypeID(value) == AXUIElementGetTypeID() {
+    let focused = value as! AXUIElement
+    if liveTarget,elementString(focused,kAXSubroleAttribute) != kAXSecureTextFieldSubrole,
+       !isTextInput(focused),let editable = axElement(focused,"AXEditableAncestor") { return editable }
+    return focused
+   }
   }
   return nil
  }
  private func failed(_ reason:String)->Bool { failureReason=reason;NSLog("UMInsertion blocked: %@",reason);return false }
  private var capturedWindowNumber:Int?
  private var secureTarget = false
- private func windowNumber(_ appPID:pid_t)->Int? {
-  guard let list=CGWindowListCopyWindowInfo([.optionOnScreenOnly,.excludeDesktopElements],kCGNullWindowID) as? [[String:Any]] else { return nil }
-  return list.first { ($0[kCGWindowOwnerPID as String] as? Int)==Int(appPID) && ($0[kCGWindowLayer as String] as? Int)==0 }?[kCGWindowNumber as String] as? Int
+ private var liveTarget = false
+ private func visibleWindows(_ appPID:pid_t)->[[String:Any]] {
+  guard let list=CGWindowListCopyWindowInfo([.optionOnScreenOnly,.excludeDesktopElements],kCGNullWindowID) as? [[String:Any]] else { return [] }
+  return list.filter { ($0[kCGWindowOwnerPID as String] as? Int)==Int(appPID) && ($0[kCGWindowLayer as String] as? Int)==0 }
  }
+ private func windowNumber(_ appPID:pid_t)->Int? { visibleWindows(appPID).first?[kCGWindowNumber as String] as? Int }
  private var capturedWindow:AXUIElement?
  private var capturedIdentifier:String?
  private var capturedPosition:CGPoint?
@@ -59,19 +78,20 @@ import ApplicationServices
  private var capturedText:String?
  private var lastVoiceTarget:AXUIElement?
  private var lastVoiceText:String?
- func captureTarget() {
+ func captureTarget(live:Bool = false) {
+  liveTarget = live
   target = nil; pid = nil; selectionValue = nil; capturedText = nil
   failureReason = "";capturedWindow=nil;capturedWindowNumber=nil;secureTarget=false;capturedIdentifier=nil;capturedPosition=nil;capturedRole=nil
   guard AXIsProcessTrusted() else { _ = failed("Accessibility permission missing");return }
   guard let app = NSWorkspace.shared.frontmostApplication,app.bundleIdentifier != Bundle.main.bundleIdentifier else { _ = failed("Focus is still in fnota");return }
   pid=app.processIdentifier;capturedWindowNumber=windowNumber(app.processIdentifier)
+  var window:CFTypeRef?
+  AXUIElementCopyAttributeValue(AXUIElementCreateApplication(app.processIdentifier),kAXFocusedWindowAttribute as CFString,&window)
+  if let window,CFGetTypeID(window)==AXUIElementGetTypeID() { capturedWindow=window as! AXUIElement }
   guard let focused = focusedElement(app.processIdentifier) else { failureReason="Application does not expose its field; using system paste";return }
   var subrole:CFTypeRef?; AXUIElementCopyAttributeValue(focused,kAXSubroleAttribute as CFString,&subrole)
   guard subrole as? String != kAXSecureTextFieldSubrole else { secureTarget=true;_ = failed("Secure field");return }
   target = focused; pid = app.processIdentifier
-  var window:CFTypeRef?
-  AXUIElementCopyAttributeValue(AXUIElementCreateApplication(app.processIdentifier),kAXFocusedWindowAttribute as CFString,&window)
-  if let window,CFGetTypeID(window)==AXUIElementGetTypeID() { capturedWindow=window as! AXUIElement }
   capturedIdentifier = elementString(focused,"AXIdentifier") ?? elementString(focused,"AXDOMIdentifier")
   capturedRole = elementString(focused,kAXRoleAttribute)
   capturedPosition = position(focused)
@@ -129,13 +149,16 @@ import ApplicationServices
   }
   return previous.last?.isWhitespace == false && text.first?.isWhitespace == false ? " " + text : text
  }
- private func key(_ code:CGKeyCode,flags:CGEventFlags = []) {
+ private func key(_ code:CGKeyCode,flags:CGEventFlags = [],foreground:Bool = false) {
   let source=CGEventSource(stateID:.privateState)
   let down=CGEvent(keyboardEventSource:source,virtualKey:code,keyDown:true),up=CGEvent(keyboardEventSource:source,virtualKey:code,keyDown:false)
   down?.flags=flags;up?.flags=flags
   if let pid {
    let bundle=NSRunningApplication(processIdentifier:pid)?.bundleIdentifier ?? ""
-   if ["com.google.Chrome","com.apple.Safari"].contains(bundle) { down?.postToPid(pid);up?.postToPid(pid) }
+   if foreground {
+    down?.post(tap:.cghidEventTap)
+    up?.post(tap:.cghidEventTap)
+   } else if ["com.google.Chrome","com.apple.Safari"].contains(bundle) { down?.postToPid(pid);up?.postToPid(pid) }
    else {
     if flags.contains(.maskCommand) { let command=CGEvent(keyboardEventSource:source,virtualKey:55,keyDown:true);command?.flags = .maskCommand;command?.post(tap:.cghidEventTap) }
     down?.post(tap:.cghidEventTap);up?.post(tap:.cghidEventTap)
@@ -190,6 +213,154 @@ import ApplicationServices
    return true
   }
   return false
+ }
+
+ private func axElement(_ element:AXUIElement,_ attribute:String)->AXUIElement? {
+  var value:CFTypeRef?
+  guard AXUIElementCopyAttributeValue(element,attribute as CFString,&value) == .success,
+        let value,CFGetTypeID(value) == AXUIElementGetTypeID() else { return nil }
+  return (value as! AXUIElement)
+ }
+
+ private func belongsToWebEditor(_ element:AXUIElement)->Bool {
+  var node:AXUIElement? = element
+  for _ in 0..<16 {
+   guard let current = node else { break }
+   if elementString(current,kAXRoleAttribute) == "AXWebArea" { return true }
+   node = axElement(current,kAXParentAttribute)
+  }
+  return false
+ }
+
+ private func isTextInput(_ element:AXUIElement)->Bool {
+  let role = elementString(element,kAXRoleAttribute) ?? ""
+  return [kAXTextFieldRole,kAXTextAreaRole,kAXComboBoxRole].contains(role)
+ }
+ private func actuallyEditable(_ element:AXUIElement)->Bool {
+  if isTextInput(element) || canInsert { return true }
+  var value:CFTypeRef?
+  AXUIElementCopyAttributeValue(element,"AXIsEditable" as CFString,&value)
+  return (value as? Bool) == true || axElement(element,"AXEditableAncestor") != nil
+ }
+
+ func insertLiveDictation(_ words:String,continuation:Bool) async -> Bool {
+  if !continuation,!secureTarget,let pid,
+     NSWorkspace.shared.frontmostApplication?.processIdentifier == pid,
+     let capturedWindow,
+     let currentWindow = axElement(AXUIElementCreateApplication(pid),kAXFocusedWindowAttribute),
+     CFEqual(capturedWindow,currentWindow),
+     target.map({ !actuallyEditable($0) }) ?? true {
+   // The renderer may expose its field only after its accessibility tree loads.
+   captureTarget(live:true)
+  }
+  guard !secureTarget,let target,let pid,
+        unchangedTarget(requireContent:false),
+        elementString(target,kAXSubroleAttribute) != kAXSecureTextFieldSubrole,
+        actuallyEditable(target)
+  else { return failed("Live dictation has no focused editable field") }
+
+  let bundle = NSRunningApplication(processIdentifier:pid)?.bundleIdentifier ?? ""
+  let webEditor = ["com.openai.codex","com.google.Chrome","com.apple.Safari"].contains(bundle) || belongsToWebEditor(target)
+  let text = continuation ? " " + words : dictationText(words)
+  if !webEditor {
+   guard unchangedTarget() else { return failed("Live dictation field or caret was edited") }
+   if canInsert,AXUIElementSetAttributeValue(target,kAXSelectedTextAttribute as CFString,text as CFString) == .success {
+    if let range = textRange(selectionValue),
+       let caret = selection(at:range.location + text.utf16.count) {
+     AXUIElementSetAttributeValue(target,kAXSelectedTextRangeAttribute as CFString,caret)
+    }
+    refreshLiveSelection(target)
+    return true
+   }
+  }
+  let activeWindow = axElement(AXUIElementCreateApplication(pid),kAXFocusedWindowAttribute)
+  let sameWindow = capturedWindow.flatMap { original in activeWindow.map { CFEqual(original,$0) } }
+   ?? (capturedWindowNumber != nil && capturedWindowNumber == windowNumber(pid))
+  guard sameWindow else { return failed("The active window changed") }
+
+  let before = attributeText(kAXValueAttribute)
+  let beforeRange = textRange(selectionValue)
+  let clipboard = NSPasteboard.general
+  let saved = (clipboard.pasteboardItems ?? []).map { item in
+   item.types.compactMap { type in item.data(forType:type).map { (type,$0) } }
+  }
+  guard unchangedTarget(requireContent:false) else { return false }
+  clipboard.clearContents()
+  clipboard.setString(text,forType:.string)
+  let pasteChange = clipboard.changeCount
+  defer {
+   if clipboard.changeCount == pasteChange {
+    clipboard.clearContents()
+    let items = saved.map { contents in
+     let item = NSPasteboardItem()
+     for (type,data) in contents { item.setData(data,forType:type) }
+     return item
+    }.filter { !$0.types.isEmpty }
+    if !items.isEmpty { clipboard.writeObjects(items) }
+   }
+  }
+
+  // Send the shortcut through the foreground responder chain. Chromium and
+  // WebKit forward it to the content editor there, including contenteditable.
+  key(9,flags:.maskCommand,foreground:true)
+  for _ in 0..<8 {
+   try? await Task.sleep(for:.milliseconds(25))
+   guard unchangedTarget(requireContent:false) else { return false }
+   var current:CFTypeRef?
+   AXUIElementCopyAttributeValue(target,kAXSelectedTextRangeAttribute as CFString,&current)
+   if attributeText(kAXValueAttribute) != before || textRange(current) != beforeRange {
+    refreshLiveSelection(target)
+    return true
+   }
+  }
+  // Some web inputs report a static or absent AX value and caret. The paste
+  // event was dispatched to the still-focused editor.
+  if webEditor || (before == nil && beforeRange == nil) { return true }
+  return failed("The editor did not accept the live paste")
+ }
+
+ private func refreshLiveSelection(_ element:AXUIElement) {
+  capturedText = attributeText(kAXValueAttribute)
+  var range:CFTypeRef?
+  AXUIElementCopyAttributeValue(element,kAXSelectedTextRangeAttribute as CFString,&range)
+  selectionValue = range
+ }
+
+ private func textRange(_ value:CFTypeRef?)->NSRange? {
+  guard let value,CFGetTypeID(value) == AXValueGetTypeID() else { return nil }
+  var range = CFRange()
+  guard AXValueGetValue(value as! AXValue,.cfRange,&range),range.location >= 0,range.length >= 0 else { return nil }
+  return NSRange(location:range.location,length:range.length)
+ }
+
+ private func selection(at location:Int)->AXValue? {
+  var range = CFRange(location:location,length:0)
+  return AXValueCreate(.cfRange,&range)
+ }
+
+ func dictationWindowFrame()->NSRect? {
+  guard let pid,NSWorkspace.shared.frontmostApplication?.processIdentifier == pid,
+        let desktopTop = NSScreen.screens.first?.frame.maxY else { return nil }
+  let screenRect:CGRect
+  if let original = capturedWindow {
+   guard let current = axElement(AXUIElementCreateApplication(pid),kAXFocusedWindowAttribute),
+         CFEqual(current,original),let origin = position(current) else { return nil }
+   var value:CFTypeRef?
+   guard AXUIElementCopyAttributeValue(current,kAXSizeAttribute as CFString,&value) == .success,
+         let value,CFGetTypeID(value) == AXValueGetTypeID() else { return nil }
+   var size = CGSize.zero
+   guard AXValueGetValue(value as! AXValue,.cgSize,&size) else { return nil }
+   screenRect = CGRect(origin:origin,size:size)
+  } else {
+   let windows = visibleWindows(pid)
+   guard windows.count == 1,let capturedWindowNumber,let info = windows.first,
+         (info[kCGWindowNumber as String] as? Int) == capturedWindowNumber,
+         let bounds = info[kCGWindowBounds as String] as? [String:Any],
+         let rect = CGRect(dictionaryRepresentation:bounds as CFDictionary) else { return nil }
+   screenRect = rect
+  }
+  return NSRect(x:screenRect.minX,y:desktopTop-screenRect.maxY,
+                width:screenRect.width,height:screenRect.height)
  }
 
  func requestAccess() { AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt":true] as CFDictionary) }

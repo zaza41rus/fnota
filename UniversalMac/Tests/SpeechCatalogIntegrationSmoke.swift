@@ -5,9 +5,10 @@ import Foundation
   let prefs=UserDefaults(suiteName:"UMSpeechCatalogIntegration")!
   defer { prefs.removePersistentDomain(forName:"UMSpeechCatalogIntegration") }
   let store=ModelStore(root:root,preferences:prefs)
-  precondition(SpeechModel.catalog.count==10)
+  precondition(SpeechModel.catalog.count==11)
   let engine=GigaAMEngine()
-  for model in SpeechModel.catalog {
+  precondition(SpeechModel.catalog.filter { $0.dictationMode == .live }.map(\.id) == [SpeechModel.tOne.id])
+  for model in SpeechModel.catalog where model.dictationMode == .afterRecording {
    precondition(store.installed(model),model.id)
    store.select(model);precondition(store.selectedID==model.id)
    let audio=model.architecture == .senseVoice ? "/tmp/um-english.wav" : "/tmp/universalmac-speech-test.wav"

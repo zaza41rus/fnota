@@ -11,6 +11,7 @@ struct SpeechSettingsView:View {
       Image(systemName:state.models.installed(model) ? "cpu" : "shippingbox").font(.title2).frame(width:24).padding(.top,3)
       VStack(alignment:.leading,spacing:4) {
        Text(model.title).font(.headline)
+       Label(L(model.dictationModeLabel), systemImage:model.dictationMode == .live ? "waveform" : "text.alignleft").font(.caption.weight(.medium))
        Text(L(model.language)).font(.callout).foregroundStyle(.secondary)
        Text("\(model.size) · CPU · \(model.license)").font(.caption).foregroundStyle(.secondary)
        Text(L(model.purpose)).font(.callout).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)

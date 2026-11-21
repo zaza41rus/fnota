@@ -8,7 +8,7 @@ import AppKit
    state.sleep.closedLid.setEnabled(true,awake:state.sleep.enabled)
   }
  }
- func applicationWillTerminate(_ notification:Notification) { state?.audio.restoreOutput(); state?.sleep.stop(preservePreference:true); state?.shortcuts.unregister(); state?.keyboardLayoutSwitcher.stop() }
+ func applicationWillTerminate(_ notification:Notification) { state?.overlay.hideRecording(); state?.audio.restoreOutput(); state?.sleep.stop(preservePreference:true); state?.shortcuts.unregister(); state?.keyboardLayoutSwitcher.stop() }
 }
 @main struct UniversalMacApp:App {
  @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate

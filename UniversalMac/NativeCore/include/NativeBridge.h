@@ -17,3 +17,8 @@ void UMDestroyTranslator(void *translator);
 void *UMCreateSpeechRecognizer(const char *folder, int32_t architecture);
 char *UMTranscribeSpeech(void *recognizer, const float *samples, int32_t count, int32_t sample_rate);
 void UMDestroySpeechRecognizer(void *recognizer);
+
+void *UMCreateTOneStream(const char *model, const char *tokens);
+char *UMDecodeTOneStream(void *session, const float *samples, int32_t count,
+                         int32_t sample_rate, int32_t finished, int32_t *endpoint);
+void UMDestroyTOneStream(void *session);
