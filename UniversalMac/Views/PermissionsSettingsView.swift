@@ -84,8 +84,11 @@ struct PermissionsSettingsView:View {
     Spacer()
     Text(!running ? "Open browser to check" : state.permissions.busy ? "Checking permissions…" : issue == nil ? "Allowed" : "Action required").font(.callout).foregroundStyle(.secondary)
    }
-   Text(instruction).font(.callout).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
-   if let issue { Text(issue.message).font(.callout).foregroundStyle(.secondary).textSelection(.enabled) }
+   if let issue {
+    Text(issue.message).font(.callout).foregroundStyle(.secondary).textSelection(.enabled)
+   } else if !running {
+    Text(instruction).font(.callout).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
+   }
   }.padding(.vertical,4)
  }
 }

@@ -51,21 +51,33 @@ final class LiveSpeechSession: @unchecked Sendable {
  private var emitted:[String] = []
  private var lastPublished:[String] = []
  private var sampleRate:Int32?
+ private var padsOnFinish = false
  private let onUpdate:@Sendable ([String]) -> Void
 
  init(onUpdate:@escaping @Sendable ([String]) -> Void) { self.onUpdate = onUpdate }
- deinit { if let stream { UMDestroyTOneStream(stream) } }
+ deinit { if let stream { UMDestroyLiveSpeech(stream) } }
 
  func prepare(model:SpeechModel,folder:URL) -> AsyncThrowingStream<Void,Error> {
   let (ready,continuation) = AsyncThrowingStream<Void,Error>.makeStream()
   queue.async {
-   guard model.id == SpeechModel.tOne.id,
+   guard model.dictationMode == .live,
          model.files.allSatisfy({ FileManager.default.isReadableFile(atPath:folder.appendingPathComponent($0.name).path) }) else {
     continuation.finish(throwing:AppFailure.message("Could not load the live dictation model"))
     return
    }
-   self.stream = folder.appendingPathComponent("model.onnx").path.withCString { modelPath in
-    folder.appendingPathComponent("tokens.txt").path.withCString { UMCreateTOneStream(modelPath,$0) }
+   self.padsOnFinish = model.id == SpeechModel.tOne.id
+   if self.padsOnFinish {
+    self.stream = folder.appendingPathComponent("model.onnx").path.withCString { modelPath in
+     folder.appendingPathComponent("tokens.txt").path.withCString { UMCreateTOneStream(modelPath,$0) }
+    }
+   } else {
+    self.stream = folder.appendingPathComponent("v4_rnnt_640ms_stream_step.int8.onnx").path.withCString { encoder in
+     folder.appendingPathComponent("v4_rnnt_640ms_e2e_decoder.onnx").path.withCString { decoder in
+      folder.appendingPathComponent("v4_rnnt_640ms_e2e_joint.onnx").path.withCString { joiner in
+       folder.appendingPathComponent("tokens.e2e.txt").path.withCString { UMCreateGigaAMV4Stream(encoder,decoder,joiner,$0) }
+      }
+     }
+    }
    }
    if self.stream != nil { continuation.yield(()); continuation.finish() }
    else { continuation.finish(throwing:AppFailure.message("Could not load the live dictation model")) }
@@ -97,9 +109,9 @@ final class LiveSpeechSession: @unchecked Sendable {
   await withCheckedContinuation { continuation in
    queue.async {
     if let rate = self.sampleRate {
-     self.decode([Float](repeating:0,count:Int(rate)),rate:rate,finished:true)
+     self.decode([Float](repeating:0,count:self.padsOnFinish ? Int(rate) : 0),rate:rate,finished:true)
     }
-    if let stream = self.stream { UMDestroyTOneStream(stream); self.stream = nil }
+    if let stream = self.stream { UMDestroyLiveSpeech(stream); self.stream = nil }
     continuation.resume(returning:self.completed)
    }
   }
@@ -109,7 +121,7 @@ final class LiveSpeechSession: @unchecked Sendable {
   guard let stream else { return }
   var endpoint:Int32 = 0
   let result = samples.withUnsafeBufferPointer {
-   UMDecodeTOneStream(stream,$0.baseAddress,Int32($0.count),rate,finished ? 1 : 0,&endpoint)
+   UMDecodeLiveSpeech(stream,$0.baseAddress,Int32($0.count),rate,finished ? 1 : 0,&endpoint)
   }
   let words:[String]
   if let result {
@@ -117,7 +129,7 @@ final class LiveSpeechSession: @unchecked Sendable {
    UMFree(result)
   } else { words = [] }
 
-  // A following word establishes the boundary in T-one's greedy output.
+  // A following word establishes the boundary in cumulative output.
   // Keep the word currently being decoded provisional.
   let stable = endpoint != 0 ? words.count : max(0,words.count - 1)
   if stable > emitted.count {

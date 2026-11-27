@@ -19,6 +19,7 @@ char *UMTranscribeSpeech(void *recognizer, const float *samples, int32_t count, 
 void UMDestroySpeechRecognizer(void *recognizer);
 
 void *UMCreateTOneStream(const char *model, const char *tokens);
-char *UMDecodeTOneStream(void *session, const float *samples, int32_t count,
+void *UMCreateGigaAMV4Stream(const char *encoder, const char *decoder, const char *joiner, const char *tokens);
+char *UMDecodeLiveSpeech(void *session, const float *samples, int32_t count,
                          int32_t sample_rate, int32_t finished, int32_t *endpoint);
-void UMDestroyTOneStream(void *session);
+void UMDestroyLiveSpeech(void *session);

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 Preview 8
+
+- Added GigaAM-v4 RNNT for live Russian and English dictation with punctuation.
+- Added GigaAM-v4 CTC for Russian and English dictation with punctuation after recording.
+- Browser translation permission issues appear in the relevant section of Settings and no longer trigger the global Settings badge.
+
 ## 0.1.0 Preview 7
 
 - Added a soft, voice-reactive wave inside the bottom edge of the dictation window.

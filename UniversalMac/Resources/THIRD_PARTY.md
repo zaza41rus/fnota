@@ -1,7 +1,8 @@
 # Native dependencies and model provenance
 
-- sherpa-onnx v2.0.0, official macOS arm64 shared no-TTS release, Apache-2.0. Archive SHA-256: 459da70b077ce66291292c3e08c08b89fa66b1d0a778c52460c05d36728715e4.
-- ONNX Runtime 1.28.2 native library supplied with that release. MIT license and upstream ThirdPartyNotices are included in `Licenses/`. [Versioned notice source](https://cdn.jsdelivr.net/gh/microsoft/onnxruntime@v1.28.2/ThirdPartyNotices.txt).
+- sherpa-onnx v2.0.3 GigaAM preview, built from [revision 411c7c3](https://github.com/ai-babai/sherpa-onnx/tree/411c7c3ed6232348add92537fdfd61f7f5b6588d) for macOS arm64, Apache-2.0.
+- ONNX Runtime 1.28.2 native macOS arm64 library. MIT license and upstream ThirdPartyNotices are included in `Licenses/`. [Versioned notice source](https://cdn.jsdelivr.net/gh/microsoft/onnxruntime@v1.28.2/ThirdPartyNotices.txt).
+- GigaAM-v4 CTC and RNNT weights by [Salute Developers](https://github.com/salute-developers/GigaAM), MIT. Downloaded separately as pinned INT8 ONNX exports by [Altushkins](https://huggingface.co/Altushkins/GigaAM-v4-onnx/tree/87a0325922b703c1ab54bea525163f90880d3358) and [ai-babai](https://huggingface.co/ai-babai/gigaam-v4-onnx/tree/00936113c4ccdb679da0212ebdef8e52b73aac48).
 - CTranslate2 4.8.3, MIT. Native arm64 library; no Python interpreter is bundled or used at runtime.
 - SentencePiece 0.2.1, Apache-2.0; native static library.
 - GigaAM v3 E2E CTC INT8, third-party sherpa-onnx-compatible export by Smirnov75, MIT according to pinned model card. Revision 6888903da215c7735f51101d939f3bfa679fb2b8; model SHA-256 0aacb41f70f0f5aaac4b45dd430337b9e16b180f22c72af04db8516e7609c3c0; tokens SHA-256 f8eb9b115e2748db9c40a5897cae11dd0678cc0b40fd7e25f8c43b3bf28715e4. Model card included.

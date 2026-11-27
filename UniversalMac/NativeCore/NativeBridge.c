@@ -86,7 +86,18 @@ void UMDestroySpeechRecognizer(void *recognizer) {
 typedef struct {
  const SherpaOnnxOnlineRecognizer *recognizer;
  const SherpaOnnxOnlineStream *stream;
-} UMTOneSession;
+ int use_endpoint;
+} UMLiveSpeechSession;
+
+static void *UMCreateLiveSpeech(const SherpaOnnxOnlineRecognizerConfig *config) {
+ UMLiveSpeechSession *session = calloc(1, sizeof(*session));
+ if (!session) return NULL;
+ session->use_endpoint = config->enable_endpoint;
+ session->recognizer = SherpaOnnxCreateOnlineRecognizer(config);
+ if (session->recognizer) session->stream = SherpaOnnxCreateOnlineStream(session->recognizer);
+ if (!session->stream) { UMDestroyLiveSpeech(session); return NULL; }
+ return session;
+}
 
 void *UMCreateTOneStream(const char *model, const char *tokens) {
  SherpaOnnxOnlineRecognizerConfig config = {0};
@@ -101,17 +112,27 @@ void *UMCreateTOneStream(const char *model, const char *tokens) {
  config.rule1_min_trailing_silence = 2.4f;
  config.rule2_min_trailing_silence = 1.0f;
  config.rule3_min_utterance_length = 20;
- UMTOneSession *session = calloc(1, sizeof(*session));
- if (!session) return NULL;
- session->recognizer = SherpaOnnxCreateOnlineRecognizer(&config);
- if (session->recognizer) session->stream = SherpaOnnxCreateOnlineStream(session->recognizer);
- if (!session->stream) { UMDestroyTOneStream(session); return NULL; }
- return session;
+ return UMCreateLiveSpeech(&config);
 }
 
-char *UMDecodeTOneStream(void *handle, const float *samples, int32_t count,
+void *UMCreateGigaAMV4Stream(const char *encoder, const char *decoder, const char *joiner, const char *tokens) {
+ SherpaOnnxOnlineRecognizerConfig config = {0};
+ config.feat_config.sample_rate = 16000;
+ config.feat_config.feature_dim = 64;
+ config.model_config.transducer.encoder = encoder;
+ config.model_config.transducer.decoder = decoder;
+ config.model_config.transducer.joiner = joiner;
+ config.model_config.tokens = tokens;
+ config.model_config.model_type = "gigaam_v4";
+ config.model_config.provider = "cpu";
+ config.model_config.num_threads = 3;
+ config.decoding_method = "greedy_search";
+ return UMCreateLiveSpeech(&config);
+}
+
+char *UMDecodeLiveSpeech(void *handle, const float *samples, int32_t count,
                          int32_t rate, int32_t finished, int32_t *endpoint) {
- UMTOneSession *session = handle;
+ UMLiveSpeechSession *session = handle;
  if (count > 0) SherpaOnnxOnlineStreamAcceptWaveform(session->stream, rate, samples, count);
  if (finished) SherpaOnnxOnlineStreamInputFinished(session->stream);
  while (SherpaOnnxIsOnlineStreamReady(session->recognizer, session->stream))
@@ -120,13 +141,13 @@ char *UMDecodeTOneStream(void *handle, const float *samples, int32_t count,
      SherpaOnnxGetOnlineStreamResult(session->recognizer, session->stream);
  char *text = result && result->text ? strdup(result->text) : NULL;
  if (result) SherpaOnnxDestroyOnlineRecognizerResult(result);
- *endpoint = finished || SherpaOnnxOnlineStreamIsEndpoint(session->recognizer, session->stream);
+ *endpoint = finished || (session->use_endpoint && SherpaOnnxOnlineStreamIsEndpoint(session->recognizer, session->stream));
  if (*endpoint && !finished) SherpaOnnxOnlineStreamReset(session->recognizer, session->stream);
  return text;
 }
 
-void UMDestroyTOneStream(void *handle) {
- UMTOneSession *session = handle;
+void UMDestroyLiveSpeech(void *handle) {
+ UMLiveSpeechSession *session = handle;
  if (!session) return;
  if (session->stream) SherpaOnnxDestroyOnlineStream(session->stream);
  if (session->recognizer) SherpaOnnxDestroyOnlineRecognizer(session->recognizer);

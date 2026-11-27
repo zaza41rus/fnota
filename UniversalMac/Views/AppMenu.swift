@@ -117,7 +117,10 @@ struct AppMenu:View {
  private func setAwake(_ enabled:Bool) {
   if enabled { state.sleep.clearApplication();state.sleep.setDuration(121) } else { state.sleep.stop() }
  }
- private var permissionsMissing:Bool { !state.permissions.issues.isEmpty || !state.sleep.closedLid.installed }
+ private var permissionsMissing:Bool {
+  state.permissions.issues.contains { $0.id == "microphone" || $0.id == "accessibility" }
+   || !state.sleep.closedLid.installed
+ }
  private func showWindow(_ page:String) {
   state.settingsPage=page
   _ = SelectionBridge.dismissStatusPanels(NSApp.windows,keyWindow:NSApp.keyWindow)

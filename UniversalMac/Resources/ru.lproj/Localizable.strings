@@ -313,3 +313,5 @@
 "Remaining dictation copied. Paste with ⌘V." = "Остаток диктовки скопирован. Вставьте его через ⌘V.";
 "Could not load the live dictation model" = "Не удалось загрузить модель живой диктовки";
 "Live insertion unavailable in this field" = "Живая вставка в это поле недоступна";
+"Russian and English" = "Русский и английский";
+"Russian and English dictation with punctuation and number formatting." = "Диктовка на русском и английском с пунктуацией и форматированием чисел.";

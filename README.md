@@ -22,11 +22,11 @@ You can also find these instructions in **Settings → About fnota** in the curr
 
 | Feature | How to use it | Permissions |
 | --- | --- | --- |
-| Dictation | Hold **fn** to dictate. Most models insert the full transcript on release. T-one offers experimental live Russian dictation. The soft wave at the bottom of the focused window indicates recording. | Microphone and Accessibility |
+| Dictation | Hold **fn** to dictate. Most models insert the full transcript on release. GigaAM-v4 RNNT offers live Russian and English dictation with punctuation. T-one offers live Russian dictation. The soft wave at the bottom of the focused window indicates recording. | Microphone and Accessibility |
 | Browser translation | Double-press **fn** in Safari or Chrome to translate a selection or the page. Repeat to restore the original. PDF and text in images are unsupported. | Accessibility, browser Automation, and Allow JavaScript from Apple Events |
 | Keep Awake | Turn it on from the menu bar. A pink dot next to **fn** shows that it is active. The closed-lid mode temporarily prevents normal sleep. | Administrator approval for the closed-lid helper |
 
-Install compatible models in fnota before using dictation or translation. Available languages depend on the models you install. Live insertion depends on the editor. If fnota cannot insert the entire transcript, it copies the remaining text for manual paste. Turn off Keep Awake and check that the Mac has gone to sleep before carrying it. If you installed the helper, remove it from **Settings → About fnota → Remove closed-lid helper** before uninstalling fnota. [How the helper works](UniversalMac/docs/CLOSED_LID.md)
+Install compatible models in fnota before using dictation or translation. Choose **Download and use** in **Settings → Dictation → Speech recognition**. fnota uses the insertion mode shown on the active model. GigaAM-v4 CTC supports Russian and English with punctuation and inserts after recording. Live insertion depends on the editor. If fnota cannot insert the entire transcript, it copies the remaining text for manual paste. Turn off Keep Awake and check that the Mac has gone to sleep before carrying it. If you installed the helper, remove it from **Settings → About fnota → Remove closed-lid helper** before uninstalling fnota. [How the helper works](UniversalMac/docs/CLOSED_LID.md)
 
 ## Privacy and limitations
 

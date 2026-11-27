@@ -313,3 +313,5 @@
 "Remaining dictation copied. Paste with ⌘V." = "Se copió el resto del dictado. Pégalo con ⌘V.";
 "Could not load the live dictation model" = "No se pudo cargar el modelo de dictado en directo";
 "Live insertion unavailable in this field" = "La inserción en directo no está disponible en este campo";
+"Russian and English" = "Ruso e inglés";
+"Russian and English dictation with punctuation and number formatting." = "Dictado en ruso e inglés con puntuación y formato de números.";

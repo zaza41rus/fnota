@@ -3,7 +3,7 @@ struct ModelFile: Codable, Sendable { let name: String; let remote: String; let 
 struct SpeechModel: Codable, Sendable, Identifiable {
  let id: String; let title: String; let license: String; let source: String; let files: [ModelFile]
  enum DictationMode { case afterRecording, live }
- var dictationMode: DictationMode { id == Self.tOne.id ? .live : .afterRecording }
+ var dictationMode: DictationMode { id == Self.tOne.id || id == Self.gigaAMV4RNNT.id ? .live : .afterRecording }
  var dictationModeLabel: String { dictationMode == .live ? "Live dictation" : "Inserts after recording" }
  enum Architecture:Int32 { case ctc=0,whisper=1,parakeet=2,senseVoice=3 }
  var architecture:Architecture {
@@ -13,6 +13,7 @@ struct SpeechModel: Codable, Sendable, Identifiable {
   return .ctc
  }
  var purpose:String {
+  if id == Self.gigaAMV4CTC.id || id == Self.gigaAMV4RNNT.id { return "Russian and English dictation with punctuation and number formatting." }
   if dictationMode == .live { return "Streams Russian dictation locally and inserts words as you speak." }
   switch architecture {
   case .parakeet:return "Fast multilingual dictation with punctuation. Supports 25 European languages; not intended for Chinese, Japanese or Korean."
@@ -29,6 +30,7 @@ struct SpeechModel: Codable, Sendable, Identifiable {
  }
  var sourceURL:URL { URL(string:"https://huggingface.co/"+source.components(separatedBy:" · ")[0])! }
  var language:String {
+  if id == Self.gigaAMV4CTC.id || id == Self.gigaAMV4RNNT.id { return "Russian and English" }
   switch architecture {
   case .whisper:return "99 languages, including English, Russian, Spanish, Chinese and Korean"
   case .parakeet:return "25 European languages, including English, Russian, Spanish, French and German"
@@ -37,7 +39,21 @@ struct SpeechModel: Codable, Sendable, Identifiable {
   }
  }
  var size:String { ByteCountFormatter.string(fromByteCount:bytes,countStyle:.file) }
- static var catalog:[SpeechModel] { [.gigaAM,.tOne,.ctc,.whisperTiny]+expanded }
+ static var catalog:[SpeechModel] { [.gigaAMV4RNNT,.gigaAMV4CTC,.gigaAM,.tOne,.ctc,.whisperTiny]+expanded }
+ static let gigaAMV4RNNT:SpeechModel = {
+  let base="https://huggingface.co/ai-babai/gigaam-v4-onnx/resolve/00936113c4ccdb679da0212ebdef8e52b73aac48/rnnt-streaming-640ms/"
+  let artifacts:[(String,String,Int64)] = [
+   ("v4_rnnt_640ms_stream_step.int8.onnx","c0eb2185b884ceaef5f0ab79d01f6032591577f1aabbf04b85e7e157436ed69c",241144602),
+   ("v4_rnnt_640ms_stream_frontend.onnx","ace0f495c4f57cf8c09e1c961e7b811693b26066627bd7e2dddb46548fe2a570",3228803),
+   ("v4_rnnt_640ms_e2e_decoder.onnx","9d670e5d65660991c9b4bc634ebbbb1833b7ae2e591bcdf02b64087742fc9012",4599971),
+   ("v4_rnnt_640ms_e2e_joint.onnx","2562c6928dddd340910e8fec75094417d7cbadea7dcea7d4df99892397a19cff",2712939),
+   ("tokens.e2e.txt","4af4f59269ff664ea6a55838b12fa0cb5e07bd5e019202b4d38b3fbc9275e923",9982)
+  ]
+  return SpeechModel(id:"gigaam-v4-rnnt-streaming-int8",title:"GigaAM-v4 RNNT",license:"MIT",source:"ai-babai/gigaam-v4-onnx · 0093611",files:artifacts.map { ModelFile(name:$0.0,remote:base+$0.0,sha256:$0.1,bytes:$0.2) })
+ }()
+ static let gigaAMV4CTC = SpeechModel(id:"gigaam-v4-ctc-int8",title:"GigaAM-v4 CTC",license:"MIT",source:"Altushkins/GigaAM-v4-onnx · 87a0325",files:[
+ ModelFile(name:"model.onnx",remote:"https://huggingface.co/Altushkins/GigaAM-v4-onnx/resolve/87a0325922b703c1ab54bea525163f90880d3358/gigaam-v4-ru-en/model.int8.onnx",sha256:"17667dcd9f5244a6b58fed7c15882e287ae883b609a03b6b6c2485e7e45560ac",bytes:240292346),
+ ModelFile(name:"tokens.txt",remote:"https://huggingface.co/Altushkins/GigaAM-v4-onnx/resolve/87a0325922b703c1ab54bea525163f90880d3358/gigaam-v4-ru-en/tokens.txt",sha256:"4d2eff5a043cc91a9b42a58640acffd9081465067c300250dd261828b0cb6e86",bytes:841)])
  static let tOne = SpeechModel(id:"t-one-russian-streaming",title:"T-one · Russian",license:"Apache-2.0",source:"csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08 · 9d63341",files:[
  ModelFile(name:"model.onnx",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08/resolve/9d63341e0f2d8a8b2edaa825aa1fcfe3c5283b47/model.onnx",sha256:"5ded080e2a6c86ecc11bcb0902d77524eb3e8b0844cb0c0754347f5aafb4dabc",bytes:144193702),
  ModelFile(name:"tokens.txt",remote:"https://huggingface.co/csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08/resolve/9d63341e0f2d8a8b2edaa825aa1fcfe3c5283b47/tokens.txt",sha256:"27f7b3ba2096c572375fba1a6b29af1f80d86e08a329940612908112695f97e0",bytes:202)])
